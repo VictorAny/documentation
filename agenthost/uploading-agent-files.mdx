@@ -1,0 +1,688 @@
+---
+title: "Uploading Agent Files"
+description: "Manage files, documents, and knowledge bases for your AI agents on AgentHost"
+icon: "upload"
+---
+
+# Uploading Agent Files
+
+AgentHost provides powerful file management capabilities that allow your agents to access documents, images, audio files, and other resources. This guide covers everything you need to know about uploading, organizing, and utilizing files with your agents.
+
+## File System Overview
+
+The AgentHost file system provides secure, scalable storage for all your agent's resources:
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Base" icon="brain">
+    Documents that provide context and information
+    - PDFs, Word docs, text files
+    - Web pages and articles
+    - FAQs and documentation
+  </Card>
+  <Card title="Media Assets" icon="image">
+    Visual and audio content for agent responses
+    - Images and graphics
+    - Audio files and recordings
+    - Video content
+  </Card>
+  <Card title="Configuration Files" icon="gear">
+    Settings and configuration data
+    - JSON configuration files
+    - CSV data tables
+    - API schemas
+  </Card>
+  <Card title="Custom Code" icon="code">
+    Scripts and custom functions
+    - JavaScript functions
+    - Python scripts
+    - API integrations
+  </Card>
+</CardGroup>
+
+## Supported File Types
+
+### Documents
+
+<AccordionGroup>
+  <Accordion icon="file-text" title="Text Documents">
+    **Supported formats**: `.txt`, `.md`, `.rtf`
+    
+    **Use cases**:
+    - Knowledge base articles
+    - FAQ documents
+    - Product documentation
+    - Policy documents
+    
+    **Processing**: Full text extraction and indexing for semantic search
+  </Accordion>
+  
+  <Accordion icon="file-pdf" title="PDF Documents">
+    **Supported formats**: `.pdf`
+    
+    **Features**:
+    - Text extraction from text-based PDFs
+    - OCR for scanned documents
+    - Table and form data extraction
+    - Metadata preservation
+    
+    **Limitations**: 25 MB max file size, 1000 pages max
+  </Accordion>
+  
+  <Accordion icon="file-word" title="Office Documents">
+    **Supported formats**: `.docx`, `.doc`, `.pptx`, `.ppt`, `.xlsx`, `.xls`
+    
+    **Capabilities**:
+    - Full content extraction
+    - Formatting preservation
+    - Embedded image extraction
+    - Table data parsing
+  </Accordion>
+</AccordionGroup>
+
+### Media Files
+
+<Tabs>
+  <Tab title="Images">
+    **Formats**: JPG, PNG, GIF, WebP, SVG, BMP
+    **Max size**: 10 MB per file
+    **Max dimensions**: 4096x4096 pixels
+    
+    **Processing capabilities**:
+    - Automatic resizing and optimization
+    - OCR text extraction
+    - Object and scene recognition
+    - Metadata extraction (EXIF data)
+    
+    ```json Image Processing Options
+    {
+      "auto_resize": true,
+      "max_width": 1024,
+      "quality": 85,
+      "format": "webp",
+      "extract_text": true,
+      "generate_descriptions": true
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Audio">
+    **Formats**: MP3, WAV, FLAC, AAC, OGG
+    **Max size**: 50 MB per file
+    **Max duration**: 60 minutes
+    
+    **Processing capabilities**:
+    - Speech-to-text transcription
+    - Audio quality analysis
+    - Speaker identification
+    - Language detection
+    
+    ```json Audio Processing Options
+    {
+      "transcribe": true,
+      "language": "auto-detect",
+      "speaker_labels": true,
+      "noise_reduction": true,
+      "format_conversion": "mp3"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Video">
+    **Formats**: MP4, AVI, MOV, WebM
+    **Max size**: 100 MB per file
+    **Max duration**: 30 minutes
+    
+    **Processing capabilities**:
+    - Video thumbnail generation
+    - Audio track extraction
+    - Scene detection and analysis
+    - Subtitle extraction
+    
+    ```json Video Processing Options
+    {
+      "extract_audio": true,
+      "generate_thumbnails": true,
+      "thumbnail_count": 5,
+      "extract_subtitles": true
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Upload Methods
+
+### Web Interface
+
+The easiest way to upload files is through the AgentHost dashboard:
+
+1. Navigate to your agent's file management section
+2. Click **"Upload Files"** or drag and drop files
+3. Select files from your computer
+4. Configure processing options
+5. Add metadata and descriptions
+6. Click **"Upload"** to begin processing
+
+<Note>
+**Bulk uploads**: You can select multiple files at once. The interface shows upload progress for each file individually.
+</Note>
+
+### API Upload
+
+For programmatic uploads, use the AgentHost API:
+
+<CodeGroup>
+```curl Upload Single File
+curl -X POST \
+  https://api.agenthost.ai/v1/agents/{agent_id}/files \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@document.pdf" \
+  -F "metadata={\"category\":\"knowledge_base\",\"tags\":[\"product\",\"documentation\"]}"
+```
+
+```javascript Upload with SDK
+const agentHost = new AgentHost('YOUR_API_KEY');
+
+const file = await agentHost.uploadFile(agentId, {
+  file: fileBuffer,
+  filename: 'document.pdf',
+  contentType: 'application/pdf',
+  metadata: {
+    category: 'knowledge_base',
+    tags: ['product', 'documentation'],
+    description: 'Product documentation for Q1 2024'
+  }
+});
+```
+
+```python Upload with Python
+import requests
+
+url = f"https://api.agenthost.ai/v1/agents/{agent_id}/files"
+headers = {"Authorization": f"Bearer {api_key}"}
+
+with open('document.pdf', 'rb') as f:
+    files = {'file': f}
+    data = {
+        'metadata': json.dumps({
+            'category': 'knowledge_base',
+            'tags': ['product', 'documentation']
+        })
+    }
+    response = requests.post(url, headers=headers, files=files, data=data)
+```
+</CodeGroup>
+
+### Batch Upload
+
+For large numbers of files, use the batch upload API:
+
+```json Batch Upload Request
+{
+  "files": [
+    {
+      "url": "https://example.com/doc1.pdf",
+      "metadata": {
+        "category": "knowledge_base",
+        "tags": ["product"]
+      }
+    },
+    {
+      "url": "https://example.com/doc2.pdf",
+      "metadata": {
+        "category": "knowledge_base",
+        "tags": ["support"]
+      }
+    }
+  ],
+  "processing_options": {
+    "extract_text": true,
+    "generate_embeddings": true,
+    "auto_categorize": true
+  }
+}
+```
+
+## File Organization
+
+### Folder Structure
+
+Organize your files using a hierarchical folder structure:
+
+```
+📁 Agent Files
+├── 📁 knowledge_base/
+│   ├── 📁 products/
+│   │   ├── product_catalog.pdf
+│   │   └── pricing_guide.xlsx
+│   ├── 📁 support/
+│   │   ├── faq.md
+│   │   └── troubleshooting.pdf
+│   └── 📁 policies/
+│       ├── terms_of_service.pdf
+│       └── privacy_policy.pdf
+├── 📁 media/
+│   ├── 📁 images/
+│   │   ├── logo.png
+│   │   └── product_photos/
+│   └── 📁 audio/
+│       └── welcome_message.mp3
+└── 📁 config/
+    ├── agent_settings.json
+    └── api_schemas.json
+```
+
+### Metadata System
+
+Enhance file organization with rich metadata:
+
+<ResponseField name="category" type="string" required>
+  Primary category for the file
+  
+  **Options**: `knowledge_base`, `media`, `config`, `templates`, `data`
+</ResponseField>
+
+<ResponseField name="tags" type="array">
+  Searchable tags for content discovery
+  
+  **Example**: `["product", "documentation", "v2.0"]`
+</ResponseField>
+
+<ResponseField name="description" type="string">
+  Human-readable description of the file content
+</ResponseField>
+
+<ResponseField name="access_level" type="string" default="agent">
+  Who can access this file
+  
+  **Options**: `public`, `agent`, `admin`, `private`
+</ResponseField>
+
+<ResponseField name="expiry_date" type="string">
+  When the file should be automatically removed (ISO 8601 format)
+</ResponseField>
+
+### File Versioning
+
+AgentHost automatically tracks file versions:
+
+```json File Version History
+{
+  "file_id": "file_123",
+  "versions": [
+    {
+      "version": "1.0",
+      "uploaded_at": "2024-01-01T10:00:00Z",
+      "size": 1048576,
+      "checksum": "abc123...",
+      "is_current": false
+    },
+    {
+      "version": "1.1",
+      "uploaded_at": "2024-01-15T14:30:00Z",
+      "size": 1152256,
+      "checksum": "def456...",
+      "is_current": true
+    }
+  ]
+}
+```
+
+## File Processing
+
+### Automatic Processing
+
+When files are uploaded, AgentHost automatically processes them:
+
+<Tabs>
+  <Tab title="Text Extraction">
+    **For all document types**:
+    - Extract plain text content
+    - Preserve structure and formatting
+    - Generate searchable index
+    - Create content summaries
+    
+    **Configuration**:
+    ```json
+    {
+      "text_extraction": {
+        "preserve_formatting": true,
+        "extract_metadata": true,
+        "language_detection": true,
+        "content_summary": true
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Embedding Generation">
+    **For semantic search**:
+    - Generate vector embeddings
+    - Chunk long documents
+    - Create searchable knowledge base
+    - Enable similarity matching
+    
+    **Configuration**:
+    ```json
+    {
+      "embeddings": {
+        "model": "text-embedding-ada-002",
+        "chunk_size": 1000,
+        "chunk_overlap": 200,
+        "include_metadata": true
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Content Analysis">
+    **Intelligent analysis**:
+    - Topic identification
+    - Sentiment analysis
+    - Key phrase extraction
+    - Content categorization
+    
+    **Results**:
+    ```json
+    {
+      "topics": ["customer service", "billing"],
+      "sentiment": "neutral",
+      "key_phrases": ["refund policy", "billing cycle"],
+      "confidence": 0.89
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Custom Processing
+
+Configure custom processing pipelines:
+
+```json Custom Processing Pipeline
+{
+  "pipeline": [
+    {
+      "stage": "preprocessing",
+      "tasks": ["noise_removal", "format_normalization"]
+    },
+    {
+      "stage": "extraction",
+      "tasks": ["text_extraction", "metadata_extraction", "entity_recognition"]
+    },
+    {
+      "stage": "analysis",
+      "tasks": ["topic_modeling", "sentiment_analysis", "content_classification"]
+    },
+    {
+      "stage": "indexing",
+      "tasks": ["embedding_generation", "search_indexing", "knowledge_graph_update"]
+    }
+  ]
+}
+```
+
+## Knowledge Base Integration
+
+### Semantic Search
+
+Files automatically become searchable through semantic understanding:
+
+```javascript Search Example
+const results = await agentHost.search(agentId, {
+  query: "How do I process a refund?",
+  type: "semantic",
+  limit: 5,
+  filters: {
+    category: "knowledge_base",
+    tags: ["support", "billing"]
+  }
+});
+```
+
+### Context Injection
+
+Files can be automatically included in agent responses:
+
+```json Context Configuration
+{
+  "context_injection": {
+    "enabled": true,
+    "max_context_length": 4000,
+    "relevance_threshold": 0.7,
+    "sources_to_include": 3,
+    "citation_style": "inline"
+  }
+}
+```
+
+### Dynamic Updates
+
+Keep your knowledge base current:
+
+<AccordionGroup>
+  <Accordion icon="sync" title="Auto-Sync">
+    Automatically sync files from external sources:
+    
+    ```json
+    {
+      "auto_sync": {
+        "sources": [
+          {
+            "type": "google_drive",
+            "folder_id": "folder_123",
+            "sync_interval": "hourly"
+          },
+          {
+            "type": "github",
+            "repository": "company/docs",
+            "branch": "main",
+            "path": "docs/",
+            "sync_interval": "daily"
+          }
+        ]
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="webhook" title="Webhook Updates">
+    Trigger updates via webhooks:
+    
+    ```json
+    {
+      "webhooks": {
+        "content_updated": "https://api.agenthost.ai/v1/agents/{agent_id}/files/sync",
+        "file_deleted": "https://api.agenthost.ai/v1/agents/{agent_id}/files/{file_id}"
+      }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## File Management
+
+### File Operations
+
+<CardGroup cols={2}>
+  <Card title="View & Preview" icon="eye">
+    - Online document viewer
+    - Image galleries
+    - Audio/video players
+    - Metadata inspection
+  </Card>
+  <Card title="Edit & Update" icon="pen">
+    - Replace file versions
+    - Update metadata
+    - Modify access permissions
+    - Add annotations
+  </Card>
+  <Card title="Download & Export" icon="download">
+    - Download original files
+    - Export processed versions
+    - Bulk download archives
+    - API data export
+  </Card>
+  <Card title="Delete & Archive" icon="trash">
+    - Soft delete with recovery
+    - Permanent deletion
+    - Automatic archiving
+    - Cleanup policies
+  </Card>
+</CardGroup>
+
+### Access Control
+
+Manage who can access your files:
+
+```json Access Control Example
+{
+  "file_permissions": {
+    "read": ["agent", "admin", "viewer"],
+    "write": ["admin"],
+    "delete": ["admin"],
+    "share": ["admin"]
+  },
+  "sharing_settings": {
+    "public_access": false,
+    "link_sharing": true,
+    "link_expiry": "2024-12-31T23:59:59Z",
+    "download_limit": 100
+  }
+}
+```
+
+### Storage Analytics
+
+Monitor your file storage usage:
+
+<AccordionGroup>
+  <Accordion icon="chart-pie" title="Storage Breakdown">
+    - Total storage used
+    - Files by category
+    - Largest files
+    - Storage growth trends
+  </Accordion>
+  
+  <Accordion icon="activity" title="Access Patterns">
+    - Most accessed files
+    - Search queries
+    - Download statistics
+    - Performance metrics
+  </Accordion>
+  
+  <Accordion icon="clock" title="File Lifecycle">
+    - Upload frequency
+    - File age distribution
+    - Update patterns
+    - Deletion statistics
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+### Optimization Tips
+
+<Tip>
+**File Naming**: Use descriptive, consistent naming conventions like `product_guide_v2.1_2024.pdf`
+</Tip>
+
+<Tip>
+**Organization**: Group related files in folders and use meaningful tags for easy discovery
+</Tip>
+
+<Tip>
+**Size Management**: Compress large files before upload to reduce storage costs and improve performance
+</Tip>
+
+### Security Considerations
+
+<Warning>
+**Sensitive Data**: Never upload files containing passwords, API keys, or personal information
+</Warning>
+
+<Warning>
+**Copyright**: Ensure you have rights to use all uploaded content
+</Warning>
+
+<Note>
+**Encryption**: All files are encrypted at rest and in transit using industry-standard encryption
+</Note>
+
+### Performance Guidelines
+
+<AccordionGroup>
+  <Accordion icon="gauge" title="Upload Performance">
+    - Upload files during off-peak hours for faster processing
+    - Use batch uploads for multiple files
+    - Compress large files before upload
+    - Consider CDN deployment for frequently accessed files
+  </Accordion>
+  
+  <Accordion icon="search" title="Search Optimization">
+    - Add descriptive metadata to improve search relevance
+    - Use consistent tagging across similar files
+    - Regularly clean up outdated or duplicate files
+    - Monitor search analytics to improve content organization
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+<Tabs>
+  <Tab title="Upload Failures">
+    **File too large**:
+    - Check file size limits for your plan
+    - Compress files if possible
+    - Split large files into smaller parts
+    
+    **Unsupported format**:
+    - Convert to supported format
+    - Contact support for format requests
+    - Use alternative file types
+  </Tab>
+  
+  <Tab title="Processing Errors">
+    **OCR failures**:
+    - Ensure good image quality
+    - Use high-contrast scans
+    - Try different file formats
+    
+    **Text extraction issues**:
+    - Check if file is password protected
+    - Verify file isn't corrupted
+    - Try re-uploading the file
+  </Tab>
+  
+  <Tab title="Search Problems">
+    **No search results**:
+    - Check if files are still processing
+    - Verify search terms and filters
+    - Ensure files have proper metadata
+    
+    **Poor relevance**:
+    - Add more descriptive metadata
+    - Use consistent terminology
+    - Review and update tags
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Monetizing Agents"
+    icon="dollar-sign"
+    href="/agenthost/monetizing-agents"
+  >
+    Learn how to generate revenue from your agents
+  </Card>
+  <Card
+    title="Fine-Tuning"
+    icon="sliders"
+    href="/agenthost/fine-tuning"
+  >
+    Advanced techniques for optimizing agent performance
+  </Card>
+</CardGroup>

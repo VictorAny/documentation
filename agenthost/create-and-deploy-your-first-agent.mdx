@@ -1,0 +1,294 @@
+---
+title: "Create and Deploy Your First Agent"
+description: "Step-by-step guide to creating and deploying your first AI agent on AgentHost"
+icon: "rocket"
+---
+
+# Create and Deploy Your First Agent
+
+Welcome to AgentHost! This guide will walk you through creating and deploying your first AI agent in just a few minutes. By the end of this tutorial, you'll have a fully functional agent running on our platform.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- An AgentHost account (sign up at [agenthost.ai](https://agenthost.ai))
+- Basic understanding of AI concepts
+- A clear idea of what you want your agent to do
+
+## Step 1: Create Your Agent
+
+### Access the Agent Builder
+
+1. Log into your AgentHost dashboard
+2. Click the **"Create New Agent"** button
+3. Choose your preferred creation method:
+   - **Quick Start Template** - Use pre-built templates
+   - **Custom Agent** - Build from scratch
+   - **Import Existing** - Import from another platform
+
+<Note>
+We recommend starting with a Quick Start Template for your first agent to understand the platform basics.
+</Note>
+
+### Configure Basic Settings
+
+Fill in your agent's basic information:
+
+```json Agent Configuration
+{
+  "name": "My First Agent",
+  "description": "A helpful customer service agent",
+  "language": "en",
+  "timezone": "UTC",
+  "model": "gpt-4-turbo"
+}
+```
+
+<Accordion title="Available Models">
+  - **GPT-4 Turbo** - Best for complex reasoning and conversations
+  - **GPT-3.5 Turbo** - Fast and cost-effective for most use cases
+  - **Claude 3 Sonnet** - Excellent for creative and analytical tasks
+  - **Custom Models** - Use your own fine-tuned models
+</Accordion>
+
+## Step 2: Define Agent Behavior
+
+### Set Your Agent's Personality
+
+Configure how your agent should behave and respond:
+
+```yaml Agent Personality
+system_prompt: |
+  You are a helpful customer service agent for AgentHost.
+  You should be friendly, professional, and knowledgeable about our platform.
+  Always aim to solve the user's problem efficiently.
+
+tone: "friendly_professional"
+response_style: "concise_but_helpful"
+```
+
+### Configure Response Settings
+
+<AccordionGroup>
+  <Accordion icon="clock" title="Response Timing">
+    - **Response Delay**: 0-3 seconds (simulates thinking time)
+    - **Typing Indicator**: Shows when agent is "typing"
+    - **Read Receipts**: Indicates when messages are read
+  </Accordion>
+  
+  <Accordion icon="message" title="Message Handling">
+    - **Max Response Length**: 500-4000 characters
+    - **Context Window**: How much conversation history to remember
+    - **Fallback Responses**: What to say when uncertain
+  </Accordion>
+</AccordionGroup>
+
+## Step 3: Set Up Agent Capabilities
+
+### Enable Core Features
+
+Choose which capabilities your agent should have:
+
+<CardGroup cols={2}>
+  <Card title="Text Conversations" icon="message">
+    Handle text-based conversations with users
+  </Card>
+  <Card title="File Processing" icon="file">
+    Read and analyze uploaded documents
+  </Card>
+  <Card title="Web Search" icon="magnifying-glass">
+    Access real-time information from the web
+  </Card>
+  <Card title="API Integrations" icon="plug">
+    Connect to external services and databases
+  </Card>
+</CardGroup>
+
+### Configure Integrations
+
+Connect your agent to external services:
+
+```bash Environment Variables
+# Database connection
+DATABASE_URL=postgresql://username:password@host:5432/dbname
+
+# External APIs
+WEATHER_API_KEY=your_weather_api_key
+CRM_API_ENDPOINT=https://api.yourcrm.com/v1
+
+# Authentication
+JWT_SECRET=your_jwt_secret
+```
+
+<Warning>
+Store sensitive credentials securely using AgentHost's environment variable system. Never hardcode secrets in your agent configuration.
+</Warning>
+
+## Step 4: Test Your Agent
+
+### Use the Built-in Simulator
+
+Before deploying, test your agent using our built-in simulator:
+
+1. Click **"Test Agent"** in the agent builder
+2. Start a conversation with your agent
+3. Try various scenarios and edge cases
+4. Refine the configuration based on test results
+
+### Common Test Scenarios
+
+<Tabs>
+  <Tab title="Happy Path">
+    Test normal conversations where everything works as expected:
+    - Greeting the agent
+    - Asking common questions
+    - Following the intended conversation flow
+  </Tab>
+  
+  <Tab title="Edge Cases">
+    Test unusual or challenging scenarios:
+    - Very long messages
+    - Multiple questions in one message
+    - Requests outside the agent's scope
+    - Inappropriate or harmful content
+  </Tab>
+  
+  <Tab title="Error Handling">
+    Test how the agent handles errors:
+    - Network connectivity issues
+    - API timeouts
+    - Invalid input formats
+    - System maintenance scenarios
+  </Tab>
+</Tabs>
+
+## Step 5: Deploy Your Agent
+
+### Choose Deployment Method
+
+<AccordionGroup>
+  <Accordion icon="cloud" title="Cloud Deployment">
+    Deploy to AgentHost's managed infrastructure:
+    - **Instant scaling** based on demand
+    - **Global CDN** for low latency
+    - **Automatic backups** and disaster recovery
+    - **99.9% uptime** SLA
+  </Accordion>
+  
+  <Accordion icon="server" title="Self-Hosted">
+    Deploy to your own infrastructure:
+    - Full control over environment
+    - Custom security configurations
+    - Integration with existing systems
+    - Compliance with specific regulations
+  </Accordion>
+</AccordionGroup>
+
+### Production Configuration
+
+Before going live, review these production settings:
+
+```yaml Production Checklist
+security:
+  rate_limiting: true
+  input_validation: strict
+  content_filtering: enabled
+  
+monitoring:
+  logging_level: info
+  metrics_collection: true
+  error_reporting: enabled
+  
+performance:
+  auto_scaling: true
+  max_concurrent_users: 1000
+  response_cache: 300 # seconds
+```
+
+### Deploy
+
+1. Click **"Deploy to Production"**
+2. Choose your deployment region
+3. Configure auto-scaling settings
+4. Review and confirm deployment
+
+<Note>
+Deployment typically takes 2-5 minutes. You'll receive an email notification when your agent is live.
+</Note>
+
+## Step 6: Monitor and Maintain
+
+### Monitor Performance
+
+Access real-time metrics in your dashboard:
+
+- **Response times** - Average and 95th percentile
+- **User satisfaction** - Based on user feedback
+- **Error rates** - Track and resolve issues quickly
+- **Usage patterns** - Understand peak times and popular features
+
+### Continuous Improvement
+
+<CardGroup cols={2}>
+  <Card title="Analytics Dashboard" icon="chart-line">
+    Track conversations, user satisfaction, and performance metrics
+  </Card>
+  <Card title="A/B Testing" icon="flask">
+    Test different agent configurations to optimize performance
+  </Card>
+  <Card title="User Feedback" icon="thumbs-up">
+    Collect and analyze user feedback for improvements
+  </Card>
+  <Card title="Version Control" icon="code-branch">
+    Manage different versions of your agent safely
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+Congratulations! Your agent is now live. Here's what you can do next:
+
+<CardGroup cols={2}>
+  <Card
+    title="Configure Agent Properties"
+    icon="settings"
+    href="/agenthost/agent-properties"
+  >
+    Fine-tune your agent's behavior and capabilities
+  </Card>
+  <Card
+    title="Upload Agent Files"
+    icon="upload"
+    href="/agenthost/uploading-agent-files"
+  >
+    Add knowledge bases and supporting documents
+  </Card>
+  <Card
+    title="Set Up Monetization"
+    icon="dollar-sign"
+    href="/agenthost/monetizing-agents"
+  >
+    Start generating revenue from your agent
+  </Card>
+  <Card
+    title="Custom Domains"
+    icon="globe"
+    href="/agenthost/custom-domains-and-embedding-agents"
+  >
+    Deploy on your own domain or embed in websites
+  </Card>
+</CardGroup>
+
+## Getting Help
+
+Need assistance? We're here to help:
+
+- **Documentation**: Comprehensive guides and API references
+- **Community Forum**: Connect with other AgentHost developers
+- **Support Tickets**: Direct help from our technical team
+- **Live Chat**: Real-time support during business hours
+
+<Tip>
+Join our Discord community for real-time help from other developers and the AgentHost team!
+</Tip>
