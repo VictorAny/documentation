@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "AgentHost Documentation",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -10,6 +10,35 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
+      {
+        "tab": "AgentHost",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "agenthost/index",
+              "agenthost/create-and-deploy-your-first-agent",
+              "agenthost/agent-properties"
+            ]
+          },
+          {
+            "group": "Core Features",
+            "pages": [
+              "agenthost/messages-and-limits",
+              "agenthost/uploading-agent-files",
+              "agenthost/monetizing-agents"
+            ]
+          },
+          {
+            "group": "Advanced Topics",
+            "pages": [
+              "agenthost/fine-tuning",
+              "agenthost/bundles",
+              "agenthost/custom-domains-and-embedding-agents"
+            ]
+          }
+        ]
+      },
       {
         "tab": "Guides",
         "groups": [

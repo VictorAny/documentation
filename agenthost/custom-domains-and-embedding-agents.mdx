@@ -1,0 +1,1326 @@
+---
+title: "Custom Domains and Embedding Agents"
+description: "Deploy agents on your own domain and embed them seamlessly in websites and applications"
+icon: "globe"
+---
+
+# Custom Domains and Embedding Agents
+
+Take full control of your agent's presence by deploying on custom domains and embedding them seamlessly into websites, applications, and platforms. AgentHost provides powerful tools for white-label deployments, branded experiences, and flexible integration options.
+
+## Custom Domain Deployment
+
+### Domain Setup
+
+Deploy your agents on your own domain for a fully branded experience:
+
+<CardGroup cols={2}>
+  <Card title="Subdomain Deployment" icon="link">
+    Deploy on a subdomain of your main site
+    - `chat.yourcompany.com`
+    - `support.yoursite.com`
+    - `ai.yourdomain.com`
+    - Easy DNS configuration
+  </Card>
+  <Card title="Path-Based Deployment" icon="folder">
+    Deploy on a path of your existing domain
+    - `yoursite.com/chat`
+    - `yourcompany.com/support`
+    - `yourdomain.com/ai`
+    - No additional DNS setup
+  </Card>
+  <Card title="Full Domain" icon="globe">
+    Use a dedicated domain for your agent
+    - `youraiassistant.com`
+    - `customersupport.ai`
+    - `myagent.io`
+    - Complete control and branding
+  </Card>
+  <Card title="White-Label" icon="tag">
+    Completely remove AgentHost branding
+    - Custom logos and colors
+    - Your own terms of service
+    - Branded error pages
+    - Custom authentication
+  </Card>
+</CardGroup>
+
+### DNS Configuration
+
+Set up DNS records to point your domain to AgentHost:
+
+<Tabs>
+  <Tab title="CNAME Setup">
+    **For subdomains** (recommended):
+    
+    ```dns
+    chat.yourcompany.com    CNAME    your-agent.agenthost.ai
+    ```
+    
+    **Verification**:
+    ```bash
+    # Verify DNS propagation
+    dig chat.yourcompany.com CNAME
+    nslookup chat.yourcompany.com
+    ```
+  </Tab>
+  
+  <Tab title="A Record Setup">
+    **For root domains**:
+    
+    ```dns
+    youraiassistant.com    A    203.0.113.1
+    youraiassistant.com    A    203.0.113.2
+    ```
+    
+    **Load Balancer IPs**: Use AgentHost's provided IP addresses for high availability
+  </Tab>
+  
+  <Tab title="Advanced Setup">
+    **With CDN integration**:
+    
+    ```dns
+    # CloudFlare example
+    chat.yoursite.com    CNAME    your-agent.agenthost.ai
+    ```
+    
+    **Configuration in AgentHost**:
+    ```json
+    {
+      "domain_config": {
+        "domain": "chat.yoursite.com",
+        "ssl_mode": "full_strict",
+        "cdn_enabled": true,
+        "cache_settings": {
+          "static_assets": "1_day",
+          "api_responses": "5_minutes"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### SSL Certificate Management
+
+AgentHost automatically handles SSL certificates for your custom domains:
+
+<AccordionGroup>
+  <Accordion icon="lock" title="Automatic SSL">
+    **Let's Encrypt Integration**:
+    - Automatic certificate generation
+    - Auto-renewal before expiration
+    - Support for wildcard certificates
+    - Multi-domain certificates
+    
+    **Configuration**:
+    ```json
+    {
+      "ssl_config": {
+        "provider": "lets_encrypt",
+        "auto_renew": true,
+        "renewal_days_before": 30,
+        "include_www": true
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="certificate" title="Custom Certificates">
+    **Bring Your Own Certificate**:
+    - Upload custom SSL certificates
+    - Support for EV certificates
+    - Wildcard and multi-domain support
+    - Custom CA certificates
+    
+    **Upload Process**:
+    ```bash
+    agenthost ssl upload \
+      --domain chat.yourcompany.com \
+      --cert certificate.pem \
+      --key private.key \
+      --chain ca-bundle.pem
+    ```
+  </Accordion>
+  
+  <Accordion icon="shield" title="Security Features">
+    **Enhanced Security**:
+    - TLS 1.3 support
+    - HSTS headers
+    - Perfect Forward Secrecy
+    - Certificate transparency logs
+    
+    **Security Headers**:
+    ```http
+    Strict-Transport-Security: max-age=31536000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: SAMEORIGIN
+    X-XSS-Protection: 1; mode=block
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Embedding Options
+
+### Web Widget Embedding
+
+Embed your agent directly into websites with customizable widgets:
+
+<Tabs>
+  <Tab title="Chat Widget">
+    **Floating chat bubble** that appears on your website:
+    
+    ```html
+    <!-- Simple embedding -->
+    <script>
+      (function() {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.agenthost.ai/widget.js';
+        script.setAttribute('data-agent-id', 'your-agent-id');
+        script.setAttribute('data-position', 'bottom-right');
+        document.head.appendChild(script);
+      })();
+    </script>
+    ```
+    
+    **Advanced configuration**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      position: 'bottom-right',
+      theme: {
+        primaryColor: '#007bff',
+        fontSize: '14px',
+        borderRadius: '8px'
+      },
+      behavior: {
+        autoOpen: false,
+        showOnPages: ['/support', '/contact'],
+        hideOnPages: ['/checkout'],
+        openDelay: 3000
+      },
+      features: {
+        fileUpload: true,
+        voiceInput: true,
+        typing: true,
+        readReceipts: true
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Inline Chat">
+    **Embedded chat interface** within page content:
+    
+    ```html
+    <!-- Container for inline chat -->
+    <div id="agent-chat-container" style="height: 500px;"></div>
+    
+    <script>
+      AgentHostWidget.embed({
+        container: '#agent-chat-container',
+        agentId: 'your-agent-id',
+        mode: 'inline',
+        showHeader: true,
+        headerTitle: 'Customer Support'
+      });
+    </script>
+    ```
+    
+    **Responsive design**:
+    ```css
+    #agent-chat-container {
+      width: 100%;
+      max-width: 800px;
+      height: 600px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin: 20px auto;
+    }
+    
+    @media (max-width: 768px) {
+      #agent-chat-container {
+        height: 400px;
+        margin: 10px;
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Full Page">
+    **Dedicated chat page** for comprehensive interactions:
+    
+    ```html
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Customer Support Chat</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+      <div id="fullpage-chat"></div>
+      
+      <script src="https://cdn.agenthost.ai/widget.js"></script>
+      <script>
+        AgentHostWidget.fullPage({
+          container: '#fullpage-chat',
+          agentId: 'your-agent-id',
+          branding: {
+            logo: 'https://yoursite.com/logo.png',
+            companyName: 'Your Company',
+            headerColor: '#1a73e8'
+          }
+        });
+      </script>
+    </body>
+    </html>
+    ```
+  </Tab>
+</Tabs>
+
+### Mobile App Integration
+
+Integrate agents into mobile applications:
+
+<Tabs>
+  <Tab title="React Native">
+    **Install the SDK**:
+    ```bash
+    npm install @agenthost/react-native-sdk
+    ```
+    
+    **Implementation**:
+    ```javascript
+    import { AgentHostChat } from '@agenthost/react-native-sdk';
+    
+    export default function SupportScreen() {
+      return (
+        <AgentHostChat
+          agentId="your-agent-id"
+          apiKey="your-api-key"
+          style={{
+            flex: 1,
+            backgroundColor: '#fff'
+          }}
+          config={{
+            theme: {
+              primaryColor: '#007AFF',
+              backgroundColor: '#f8f9fa'
+            },
+            features: {
+              fileUpload: true,
+              voiceInput: true,
+              pushNotifications: true
+            }
+          }}
+          onMessage={(message) => {
+            console.log('New message:', message);
+          }}
+        />
+      );
+    }
+    ```
+  </Tab>
+  
+  <Tab title="iOS (Swift)">
+    **Install via CocoaPods**:
+    ```ruby
+    pod 'AgentHostSDK'
+    ```
+    
+    **Implementation**:
+    ```swift
+    import AgentHostSDK
+    import UIKit
+    
+    class SupportViewController: UIViewController {
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            let chatView = AgentHostChatView(
+                agentId: "your-agent-id",
+                apiKey: "your-api-key"
+            )
+            
+            chatView.configure(
+                theme: AgentHostTheme(
+                    primaryColor: UIColor.systemBlue,
+                    backgroundColor: UIColor.systemBackground
+                ),
+                features: AgentHostFeatures(
+                    fileUpload: true,
+                    voiceInput: true,
+                    hapticFeedback: true
+                )
+            )
+            
+            view.addSubview(chatView)
+            chatView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                chatView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                chatView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                chatView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                chatView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+        }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Android (Kotlin)">
+    **Add to build.gradle**:
+    ```kotlin
+    implementation 'com.agenthost:android-sdk:1.0.0'
+    ```
+    
+    **Implementation**:
+    ```kotlin
+    import com.agenthost.androidsdk.AgentHostChatView
+    import com.agenthost.androidsdk.AgentHostConfig
+    
+    class SupportActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            
+            val chatView = AgentHostChatView(this)
+            chatView.initialize(
+                agentId = "your-agent-id",
+                apiKey = "your-api-key",
+                config = AgentHostConfig.Builder()
+                    .setTheme(
+                        primaryColor = ContextCompat.getColor(this, R.color.primary),
+                        backgroundColor = ContextCompat.getColor(this, R.color.background)
+                    )
+                    .setFeatures(
+                        fileUpload = true,
+                        voiceInput = true,
+                        darkMode = true
+                    )
+                    .build()
+            )
+            
+            setContentView(chatView)
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### API Integration
+
+Integrate agent capabilities directly into your applications:
+
+<CodeGroup>
+```javascript REST API
+// Send message to agent
+async function sendMessage(message, sessionId) {
+  const response = await fetch('https://your-domain.com/api/v1/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+      'X-Session-ID': sessionId
+    },
+    body: JSON.stringify({
+      message: message,
+      user_id: userId,
+      context: additionalContext
+    })
+  });
+  
+  return await response.json();
+}
+
+// Stream responses
+async function streamMessage(message, sessionId) {
+  const response = await fetch('https://your-domain.com/api/v1/chat/stream', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`,
+      'X-Session-ID': sessionId
+    },
+    body: JSON.stringify({ message })
+  });
+  
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    
+    const chunk = decoder.decode(value);
+    const data = JSON.parse(chunk);
+    
+    // Handle streaming response
+    onMessageChunk(data);
+  }
+}
+```
+
+```python Python SDK
+from agenthost import AgentHost
+
+# Initialize client with custom domain
+client = AgentHost(
+    api_key="your-api-key",
+    base_url="https://your-domain.com/api/v1"
+)
+
+# Send message
+response = client.chat.send(
+    agent_id="your-agent-id",
+    message="Hello, I need help with my order",
+    session_id="user-session-123",
+    user_id="user-456",
+    context={
+        "user_location": "US",
+        "subscription_tier": "premium"
+    }
+)
+
+print(f"Agent response: {response.message}")
+
+# Stream responses
+for chunk in client.chat.stream(
+    agent_id="your-agent-id",
+    message="Explain the pricing plans",
+    session_id="user-session-123"
+):
+    print(chunk.text, end="", flush=True)
+```
+
+```curl cURL Examples
+# Send a message
+curl -X POST https://your-domain.com/api/v1/chat \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "X-Session-ID: session-123" \
+  -d '{
+    "message": "What are your business hours?",
+    "user_id": "user-456",
+    "context": {
+      "page": "contact",
+      "user_timezone": "PST"
+    }
+  }'
+
+# Upload file for agent analysis
+curl -X POST https://your-domain.com/api/v1/files \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@document.pdf" \
+  -F "session_id=session-123" \
+  -F "purpose=analysis"
+
+# Get conversation history
+curl -X GET "https://your-domain.com/api/v1/conversations/session-123" \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+</CodeGroup>
+
+## Customization and Branding
+
+### Visual Customization
+
+Create a branded experience that matches your site:
+
+<AccordionGroup>
+  <Accordion icon="palette" title="Theme Configuration">
+    **Color Schemes**:
+    ```json
+    {
+      "theme": {
+        "colors": {
+          "primary": "#1a73e8",
+          "secondary": "#34a853",
+          "background": "#ffffff",
+          "surface": "#f8f9fa",
+          "text": "#202124",
+          "textSecondary": "#5f6368",
+          "border": "#dadce0",
+          "error": "#ea4335",
+          "success": "#34a853",
+          "warning": "#fbbc04"
+        },
+        "typography": {
+          "fontFamily": "'Roboto', sans-serif",
+          "fontSize": {
+            "small": "12px",
+            "medium": "14px",
+            "large": "16px"
+          },
+          "fontWeight": {
+            "normal": 400,
+            "medium": 500,
+            "bold": 700
+          }
+        },
+        "spacing": {
+          "small": "8px",
+          "medium": "16px",
+          "large": "24px"
+        },
+        "borderRadius": "8px",
+        "shadows": {
+          "light": "0 1px 3px rgba(0,0,0,0.1)",
+          "medium": "0 4px 6px rgba(0,0,0,0.1)",
+          "heavy": "0 10px 25px rgba(0,0,0,0.15)"
+        }
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="image" title="Custom Assets">
+    **Branding Elements**:
+    - Company logos and icons
+    - Custom avatars for agents
+    - Background images and patterns
+    - Loading animations
+    - Sound effects and notifications
+    
+    **Asset Configuration**:
+    ```json
+    {
+      "assets": {
+        "logo": "https://yoursite.com/logo.svg",
+        "favicon": "https://yoursite.com/favicon.ico",
+        "agent_avatar": "https://yoursite.com/agent-avatar.png",
+        "background": "https://yoursite.com/chat-bg.jpg",
+        "sounds": {
+          "message_received": "https://yoursite.com/sounds/notification.mp3",
+          "message_sent": "https://yoursite.com/sounds/sent.mp3"
+        }
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="code" title="Custom CSS">
+    **Advanced Styling**:
+    ```css
+    /* Custom chat widget styles */
+    .agenthost-widget {
+      --primary-color: #1a73e8;
+      --border-radius: 12px;
+      --font-family: 'Inter', sans-serif;
+    }
+    
+    .agenthost-message-bubble {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
+    }
+    
+    .agenthost-user-message {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .agenthost-agent-message {
+      background: #f8f9fa;
+      border: 1px solid #e8eaed;
+    }
+    
+    .agenthost-input-field {
+      border-radius: var(--border-radius);
+      border: 2px solid #dadce0;
+      transition: border-color 0.2s ease;
+    }
+    
+    .agenthost-input-field:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Behavioral Customization
+
+Customize how your agent behaves in different contexts:
+
+<Tabs>
+  <Tab title="Context-Aware Responses">
+    **Page-Specific Behavior**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      contextualBehavior: {
+        '/pricing': {
+          welcomeMessage: "Hi! I can help you understand our pricing plans.",
+          suggestedQuestions: [
+            "What's included in the Pro plan?",
+            "Do you offer discounts for annual billing?",
+            "Can I upgrade or downgrade anytime?"
+          ]
+        },
+        '/support': {
+          welcomeMessage: "Welcome to support! How can I help you today?",
+          priority: "high",
+          escalationThreshold: 2
+        },
+        '/checkout': {
+          welcomeMessage: "Need help completing your purchase?",
+          suggestedQuestions: [
+            "What payment methods do you accept?",
+            "How secure is my payment information?",
+            "What's your refund policy?"
+          ]
+        }
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="User Segmentation">
+    **Personalized Experiences**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      userSegmentation: {
+        'new_visitor': {
+          welcomeMessage: "Welcome! I'm here to help you get started.",
+          showOnboarding: true,
+          collectEmail: true
+        },
+        'returning_customer': {
+          welcomeMessage: "Welcome back! How can I assist you today?",
+          showOrderHistory: true,
+          fastTrackSupport: true
+        },
+        'premium_subscriber': {
+          welcomeMessage: "Hello! As a premium member, you have priority support.",
+          priority: "high",
+          features: ["advanced_analytics", "custom_integrations"]
+        }
+      }
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Multi-Language Support">
+    **Internationalization**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      localization: {
+        autoDetect: true,
+        fallback: 'en',
+        languages: {
+          'en': {
+            welcomeMessage: "Hello! How can I help you today?",
+            placeholderText: "Type your message here...",
+            sendButton: "Send"
+          },
+          'es': {
+            welcomeMessage: "¡Hola! ¿Cómo puedo ayudarte hoy?",
+            placeholderText: "Escribe tu mensaje aquí...",
+            sendButton: "Enviar"
+          },
+          'fr': {
+            welcomeMessage: "Bonjour! Comment puis-je vous aider aujourd'hui?",
+            placeholderText: "Tapez votre message ici...",
+            sendButton: "Envoyer"
+          }
+        }
+      }
+    });
+    ```
+  </Tab>
+</Tabs>
+
+## Advanced Integration Features
+
+### Single Sign-On (SSO)
+
+Integrate with your existing authentication system:
+
+<AccordionGroup>
+  <Accordion icon="key" title="SAML Integration">
+    **SAML 2.0 Configuration**:
+    ```xml
+    <saml:Assertion
+      xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+      ID="identifier_123"
+      Version="2.0">
+      <saml:Issuer>https://your-identity-provider.com</saml:Issuer>
+      <saml:Subject>
+        <saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress">
+          user@yourcompany.com
+        </saml:NameID>
+      </saml:Subject>
+      <saml:AttributeStatement>
+        <saml:Attribute Name="department">
+          <saml:AttributeValue>Engineering</saml:AttributeValue>
+        </saml:Attribute>
+      </saml:AttributeStatement>
+    </saml:Assertion>
+    ```
+  </Accordion>
+  
+  <Accordion icon="lock" title="OAuth 2.0 / OpenID Connect">
+    **OAuth Configuration**:
+    ```json
+    {
+      "oauth_config": {
+        "provider": "custom",
+        "authorization_endpoint": "https://auth.yourcompany.com/oauth/authorize",
+        "token_endpoint": "https://auth.yourcompany.com/oauth/token",
+        "userinfo_endpoint": "https://auth.yourcompany.com/oauth/userinfo",
+        "client_id": "your-client-id",
+        "scopes": ["openid", "profile", "email"],
+        "redirect_uri": "https://your-domain.com/auth/callback"
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="shield" title="JWT Token Authentication">
+    **JWT Implementation**:
+    ```javascript
+    // Generate JWT token for user session
+    const jwt = require('jsonwebtoken');
+    
+    const userToken = jwt.sign(
+      {
+        user_id: 'user-123',
+        email: 'user@example.com',
+        department: 'engineering',
+        subscription_tier: 'premium',
+        exp: Math.floor(Date.now() / 1000) + (60 * 60) // 1 hour
+      },
+      process.env.JWT_SECRET
+    );
+    
+    // Initialize widget with authenticated user
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      userToken: userToken,
+      authenticatedFeatures: {
+        orderHistory: true,
+        personalizedRecommendations: true,
+        prioritySupport: true
+      }
+    });
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Webhooks and Events
+
+Receive real-time notifications about agent interactions:
+
+<Tabs>
+  <Tab title="Webhook Configuration">
+    **Setup Webhooks**:
+    ```json
+    {
+      "webhook_config": {
+        "endpoint": "https://your-app.com/webhooks/agenthost",
+        "secret": "your-webhook-secret",
+        "events": [
+          "conversation.started",
+          "conversation.ended",
+          "message.received",
+          "escalation.triggered",
+          "satisfaction.submitted"
+        ],
+        "retry_policy": {
+          "max_attempts": 3,
+          "backoff_strategy": "exponential"
+        }
+      }
+    }
+    ```
+    
+    **Webhook Handler**:
+    ```javascript
+    const express = require('express');
+    const crypto = require('crypto');
+    
+    app.post('/webhooks/agenthost', (req, res) => {
+      const signature = req.headers['x-agenthost-signature'];
+      const payload = JSON.stringify(req.body);
+      
+      // Verify webhook signature
+      const expectedSignature = crypto
+        .createHmac('sha256', process.env.WEBHOOK_SECRET)
+        .update(payload)
+        .digest('hex');
+      
+      if (signature !== `sha256=${expectedSignature}`) {
+        return res.status(401).send('Invalid signature');
+      }
+      
+      // Process webhook event
+      const { event_type, data } = req.body;
+      
+      switch (event_type) {
+        case 'conversation.started':
+          handleConversationStarted(data);
+          break;
+        case 'escalation.triggered':
+          handleEscalation(data);
+          break;
+        // Handle other events...
+      }
+      
+      res.status(200).send('OK');
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Real-time Events">
+    **WebSocket Connection**:
+    ```javascript
+    const ws = new WebSocket('wss://your-domain.com/ws');
+    
+    ws.onopen = function() {
+      // Authenticate WebSocket connection
+      ws.send(JSON.stringify({
+        type: 'authenticate',
+        token: userToken
+      }));
+    };
+    
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      
+      switch (data.type) {
+        case 'agent_typing':
+          showTypingIndicator();
+          break;
+        case 'agent_response':
+          displayMessage(data.message);
+          break;
+        case 'conversation_transferred':
+          showTransferNotification(data.new_agent);
+          break;
+      }
+    };
+    ```
+  </Tab>
+  
+  <Tab title="Server-Sent Events">
+    **SSE Implementation**:
+    ```javascript
+    // Client-side SSE connection
+    const eventSource = new EventSource('https://your-domain.com/events', {
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    });
+    
+    eventSource.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      handleRealtimeUpdate(data);
+    };
+    
+    eventSource.addEventListener('agent_response', function(event) {
+      const response = JSON.parse(event.data);
+      displayAgentMessage(response);
+    });
+    
+    eventSource.addEventListener('conversation_ended', function(event) {
+      showSatisfactionSurvey();
+    });
+    ```
+  </Tab>
+</Tabs>
+
+## Analytics and Reporting
+
+### Custom Analytics
+
+Track detailed metrics about agent performance on your domain:
+
+<CardGroup cols={2}>
+  <Card title="Conversation Analytics" icon="chart-line">
+    - Message volume and trends
+    - User engagement metrics
+    - Conversation completion rates
+    - Average response times
+  </Card>
+  <Card title="User Behavior" icon="users">
+    - User journey analysis
+    - Feature usage patterns
+    - Satisfaction scores
+    - Retention metrics
+  </Card>
+  <Card title="Performance Metrics" icon="gauge">
+    - Agent response accuracy
+    - Resolution rates
+    - Escalation patterns
+    - System performance
+  </Card>
+  <Card title="Business Impact" icon="dollar-sign">
+    - Lead generation
+    - Sales conversion
+    - Support cost reduction
+    - ROI calculations
+  </Card>
+</CardGroup>
+
+### Integration with Analytics Platforms
+
+Connect with your existing analytics tools:
+
+<Tabs>
+  <Tab title="Google Analytics">
+    **GA4 Integration**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      analytics: {
+        googleAnalytics: {
+          measurementId: 'G-XXXXXXXXXX',
+          events: {
+            conversation_started: 'agent_conversation_started',
+            message_sent: 'agent_message_sent',
+            satisfaction_submitted: 'agent_satisfaction'
+          }
+        }
+      }
+    });
+    
+    // Custom event tracking
+    AgentHostWidget.on('message_sent', (data) => {
+      gtag('event', 'agent_interaction', {
+        event_category: 'agent',
+        event_label: data.message_type,
+        value: data.message_length
+      });
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Mixpanel">
+    **Mixpanel Tracking**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      analytics: {
+        mixpanel: {
+          token: 'your-mixpanel-token',
+          trackAllEvents: true,
+          userProperties: {
+            subscription_tier: 'premium',
+            signup_date: '2024-01-15'
+          }
+        }
+      }
+    });
+    
+    // Track custom properties
+    AgentHostWidget.on('conversation_started', (data) => {
+      mixpanel.track('Agent Conversation Started', {
+        agent_id: data.agent_id,
+        user_segment: data.user_segment,
+        page_url: window.location.href
+      });
+    });
+    ```
+  </Tab>
+  
+  <Tab title="Custom Analytics">
+    **Custom Implementation**:
+    ```javascript
+    AgentHostWidget.init({
+      agentId: 'your-agent-id',
+      analytics: {
+        custom: {
+          endpoint: 'https://analytics.yoursite.com/events',
+          batchSize: 10,
+          flushInterval: 5000
+        }
+      }
+    });
+    
+    // Send events to your analytics system
+    AgentHostWidget.on('*', (eventType, data) => {
+      sendAnalyticsEvent({
+        event: eventType,
+        timestamp: Date.now(),
+        user_id: data.user_id,
+        session_id: data.session_id,
+        properties: data
+      });
+    });
+    ```
+  </Tab>
+</Tabs>
+
+## Performance Optimization
+
+### CDN and Caching
+
+Optimize performance with content delivery networks:
+
+<AccordionGroup>
+  <Accordion icon="bolt" title="Static Asset Optimization">
+    **CDN Configuration**:
+    ```json
+    {
+      "cdn_config": {
+        "provider": "cloudflare",
+        "zones": {
+          "static_assets": {
+            "cache_ttl": "7d",
+            "compression": "gzip,brotli",
+            "minification": true
+          },
+          "api_responses": {
+            "cache_ttl": "5m",
+            "cache_key": "url+user_segment"
+          }
+        }
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="cache" title="Response Caching">
+    **Intelligent Caching**:
+    - Cache common FAQ responses
+    - Personalized cache keys
+    - Cache invalidation strategies
+    - Edge computing for low latency
+    
+    ```javascript
+    // Cache configuration
+    const cacheConfig = {
+      strategy: 'smart',
+      ttl: {
+        faq_responses: '1h',
+        user_specific: '5m',
+        real_time: '0s'
+      },
+      invalidation: {
+        on_agent_update: true,
+        on_content_change: true
+      }
+    };
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Load Balancing
+
+Ensure high availability and performance:
+
+```yaml Load Balancer Configuration
+load_balancer:
+  algorithm: weighted_round_robin
+  health_checks:
+    interval: 30s
+    timeout: 5s
+    healthy_threshold: 2
+    unhealthy_threshold: 3
+    
+  backends:
+    - server: agent-1.agenthost.ai
+      weight: 3
+      max_connections: 1000
+    - server: agent-2.agenthost.ai
+      weight: 3
+      max_connections: 1000
+    - server: agent-3.agenthost.ai
+      weight: 2
+      max_connections: 500
+      
+  failover:
+    enabled: true
+    backup_servers:
+      - backup-1.agenthost.ai
+      - backup-2.agenthost.ai
+```
+
+## Security Considerations
+
+### Data Protection
+
+Ensure secure handling of user data:
+
+<CardGroup cols={2}>
+  <Card title="Encryption" icon="lock">
+    - End-to-end encryption for messages
+    - TLS 1.3 for all communications
+    - Encrypted storage at rest
+    - Key rotation policies
+  </Card>
+  <Card title="Privacy Controls" icon="shield">
+    - GDPR compliance tools
+    - Data retention policies
+    - User consent management
+    - Right to be forgotten
+  </Card>
+  <Card title="Access Control" icon="key">
+    - Role-based permissions
+    - API key management
+    - IP whitelisting
+    - Rate limiting
+  </Card>
+  <Card title="Audit Logging" icon="file-text">
+    - Comprehensive audit trails
+    - Security event monitoring
+    - Compliance reporting
+    - Incident response
+  </Card>
+</CardGroup>
+
+### Compliance Features
+
+Meet regulatory requirements:
+
+<AccordionGroup>
+  <Accordion icon="scale-balanced" title="GDPR Compliance">
+    **Data Processing Controls**:
+    ```json
+    {
+      "gdpr_config": {
+        "data_retention": "2_years",
+        "auto_deletion": true,
+        "consent_management": {
+          "required": true,
+          "granular_controls": true,
+          "withdrawal_options": true
+        },
+        "data_portability": {
+          "export_format": "json",
+          "automated_export": true
+        },
+        "right_to_be_forgotten": {
+          "automated_deletion": true,
+          "verification_required": true
+        }
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="heart" title="HIPAA Compliance">
+    **Healthcare Data Protection**:
+    - Business Associate Agreement (BAA)
+    - PHI encryption and access controls
+    - Audit logging for all PHI access
+    - Secure communication channels
+    - User authentication and authorization
+  </Accordion>
+  
+  <Accordion icon="building" title="SOC 2 Compliance">
+    **Enterprise Security Standards**:
+    - Security controls framework
+    - Regular security audits
+    - Vulnerability management
+    - Incident response procedures
+    - Employee background checks
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+### Implementation Guidelines
+
+<Tip>
+**Progressive Enhancement**: Start with basic embedding and gradually add advanced features
+</Tip>
+
+<Tip>
+**Mobile-First Design**: Ensure your agent works well on all device sizes
+</Tip>
+
+<Warning>
+**Performance Impact**: Monitor how embedding affects your site's performance
+</Warning>
+
+### User Experience
+
+<AccordionGroup>
+  <Accordion icon="heart" title="User-Centric Design">
+    - Clear value proposition for users
+    - Intuitive interface design
+    - Accessible for users with disabilities
+    - Consistent with your brand experience
+  </Accordion>
+  
+  <Accordion icon="rocket" title="Performance Best Practices">
+    - Lazy load the chat widget
+    - Optimize for Core Web Vitals
+    - Use efficient caching strategies
+    - Monitor real user metrics
+  </Accordion>
+  
+  <Accordion icon="shield" title="Security Best Practices">
+    - Validate all user inputs
+    - Implement proper authentication
+    - Use HTTPS everywhere
+    - Regular security updates
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Common Issues
+
+<Tabs>
+  <Tab title="DNS and Domain Issues">
+    **DNS Propagation Delays**:
+    - Check DNS propagation status
+    - Verify CNAME/A record configuration
+    - Clear DNS cache if needed
+    - Use multiple DNS checkers
+    
+    **SSL Certificate Problems**:
+    - Verify domain ownership
+    - Check certificate chain
+    - Ensure proper DNS configuration
+    - Contact support for certificate issues
+  </Tab>
+  
+  <Tab title="Embedding Problems">
+    **Widget Not Loading**:
+    - Check for JavaScript errors in console
+    - Verify agent ID and API key
+    - Ensure proper script placement
+    - Check for content security policy issues
+    
+    **Styling Conflicts**:
+    - Use CSS isolation techniques
+    - Check for conflicting stylesheets
+    - Implement proper CSS specificity
+    - Use CSS-in-JS for complex cases
+  </Tab>
+  
+  <Tab title="Performance Issues">
+    **Slow Response Times**:
+    - Check network connectivity
+    - Verify CDN configuration
+    - Monitor server response times
+    - Optimize caching strategies
+    
+    **High Resource Usage**:
+    - Monitor memory usage
+    - Check for memory leaks
+    - Optimize asset loading
+    - Implement lazy loading
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Agent Properties"
+    icon="settings"
+    href="/agenthost/agent-properties"
+  >
+    Fine-tune your embedded agents for optimal performance
+  </Card>
+  <Card
+    title="Monetizing Agents"
+    icon="dollar-sign"
+    href="/agenthost/monetizing-agents"
+  >
+    Generate revenue from your custom domain deployments
+  </Card>
+</CardGroup>

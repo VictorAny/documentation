@@ -1,0 +1,523 @@
+---
+title: "Agent Properties"
+description: "Configure your agent's behavior, personality, and capabilities with detailed property settings"
+icon: "settings"
+---
+
+# Agent Properties
+
+Agent properties define how your AI agent behaves, responds, and interacts with users. This comprehensive guide covers all available configuration options to help you create the perfect agent for your use case.
+
+## Core Properties
+
+### Basic Information
+
+Configure your agent's fundamental identity and settings:
+
+<ResponseField name="name" type="string" required>
+  The display name for your agent. This appears in conversations and the dashboard.
+  
+  **Example**: `"Customer Support Agent"`
+</ResponseField>
+
+<ResponseField name="description" type="string" required>
+  A brief description of your agent's purpose and capabilities.
+  
+  **Example**: `"A helpful customer service agent that can answer questions about our products and services"`
+</ResponseField>
+
+<ResponseField name="avatar" type="string">
+  URL to your agent's avatar image. Supports PNG, JPG, GIF formats.
+  
+  **Example**: `"https://cdn.agenthost.ai/avatars/support-agent.png"`
+</ResponseField>
+
+<ResponseField name="language" type="string" default="en">
+  Primary language for your agent. Supports ISO 639-1 language codes.
+  
+  **Available languages**: `en`, `es`, `fr`, `de`, `it`, `pt`, `ru`, `ja`, `ko`, `zh`
+</ResponseField>
+
+<ResponseField name="timezone" type="string" default="UTC">
+  Timezone for timestamp formatting and scheduling features.
+  
+  **Example**: `"America/New_York"`, `"Europe/London"`, `"Asia/Tokyo"`
+</ResponseField>
+
+## AI Model Configuration
+
+### Model Selection
+
+Choose the AI model that powers your agent:
+
+<Tabs>
+  <Tab title="GPT-4 Turbo">
+    **Best for**: Complex reasoning, detailed analysis, creative tasks
+    
+    ```json
+    {
+      "model": "gpt-4-turbo",
+      "temperature": 0.7,
+      "max_tokens": 4096,
+      "top_p": 0.9
+    }
+    ```
+    
+    - **Strengths**: Superior reasoning, better context understanding
+    - **Use cases**: Customer support, content creation, complex problem-solving
+    - **Cost**: Higher per token
+  </Tab>
+  
+  <Tab title="GPT-3.5 Turbo">
+    **Best for**: Fast responses, cost-effective solutions, straightforward tasks
+    
+    ```json
+    {
+      "model": "gpt-3.5-turbo",
+      "temperature": 0.5,
+      "max_tokens": 2048,
+      "top_p": 0.8
+    }
+    ```
+    
+    - **Strengths**: Fast response times, cost-effective
+    - **Use cases**: FAQ bots, simple conversations, quick answers
+    - **Cost**: Lower per token
+  </Tab>
+  
+  <Tab title="Claude 3">
+    **Best for**: Creative writing, analytical tasks, ethical reasoning
+    
+    ```json
+    {
+      "model": "claude-3-sonnet",
+      "temperature": 0.6,
+      "max_tokens": 3000,
+      "top_p": 0.85
+    }
+    ```
+    
+    - **Strengths**: Excellent safety, creative abilities
+    - **Use cases**: Content moderation, creative projects, educational tools
+    - **Cost**: Competitive pricing
+  </Tab>
+</Tabs>
+
+### Model Parameters
+
+<AccordionGroup>
+  <Accordion icon="thermometer" title="Temperature (0.0 - 2.0)">
+    Controls randomness in responses:
+    - **0.0-0.3**: Very consistent, factual responses
+    - **0.4-0.7**: Balanced creativity and consistency
+    - **0.8-1.2**: More creative and varied responses
+    - **1.3-2.0**: Highly creative, unpredictable responses
+  </Accordion>
+  
+  <Accordion icon="hash" title="Max Tokens">
+    Maximum length of responses:
+    - **256-512**: Short, concise answers
+    - **1024-2048**: Standard conversation length
+    - **2048-4096**: Detailed explanations
+    - **4096+**: Long-form content
+  </Accordion>
+  
+  <Accordion icon="percentage" title="Top-p (0.0 - 1.0)">
+    Controls diversity of word choices:
+    - **0.1-0.5**: Conservative word selection
+    - **0.6-0.9**: Balanced diversity
+    - **0.9-1.0**: Maximum diversity
+  </Accordion>
+</AccordionGroup>
+
+## Personality Configuration
+
+### System Prompt
+
+Define your agent's core personality and behavior:
+
+```yaml System Prompt Example
+system_prompt: |
+  You are Alex, a friendly and knowledgeable customer service representative for TechCorp.
+  
+  Your personality traits:
+  - Professional yet approachable
+  - Patient and empathetic
+  - Solution-oriented
+  - Knowledgeable about technology
+  
+  Your responsibilities:
+  - Answer customer questions accurately
+  - Help resolve technical issues
+  - Escalate complex problems when needed
+  - Maintain a positive customer experience
+  
+  Communication style:
+  - Use clear, simple language
+  - Ask clarifying questions when needed
+  - Provide step-by-step instructions
+  - Always end with asking if they need more help
+```
+
+### Tone and Style
+
+<CardGroup cols={2}>
+  <Card title="Professional" icon="briefcase">
+    Formal, business-appropriate communication
+    - Clear and direct
+    - Proper grammar and terminology
+    - Respectful and courteous
+  </Card>
+  <Card title="Casual" icon="smile">
+    Relaxed, friendly conversation style
+    - Conversational language
+    - Contractions and informal phrases
+    - Emojis and casual expressions
+  </Card>
+  <Card title="Technical" icon="code">
+    Detailed, precise technical communication
+    - Industry-specific terminology
+    - Comprehensive explanations
+    - Code examples and documentation
+  </Card>
+  <Card title="Creative" icon="palette">
+    Engaging, imaginative responses
+    - Storytelling elements
+    - Metaphors and analogies
+    - Expressive language
+  </Card>
+</CardGroup>
+
+### Response Patterns
+
+Configure how your agent structures responses:
+
+```json Response Configuration
+{
+  "greeting_style": "warm_professional",
+  "confirmation_style": "active_listening",
+  "farewell_style": "helpful_closing",
+  "error_handling": "empathetic_solution_focused",
+  "escalation_trigger": "complex_technical_issues"
+}
+```
+
+## Behavioral Settings
+
+### Conversation Flow
+
+<ResponseField name="conversation_style" type="string" default="adaptive">
+  How the agent manages conversation flow:
+  - **`linear`**: Follows a structured, step-by-step approach
+  - **`adaptive`**: Adjusts to user's communication style
+  - **`exploratory`**: Encourages open-ended discussion
+</ResponseField>
+
+<ResponseField name="proactive_engagement" type="boolean" default="false">
+  Whether the agent should proactively ask questions and guide conversations.
+</ResponseField>
+
+<ResponseField name="context_retention" type="number" default="10">
+  Number of previous messages to remember in conversation context.
+  
+  **Range**: 1-50 messages
+</ResponseField>
+
+### Safety and Moderation
+
+<AccordionGroup>
+  <Accordion icon="shield" title="Content Filtering">
+    Built-in safety measures:
+    
+    ```json
+    {
+      "content_filter": {
+        "enabled": true,
+        "level": "moderate", // strict, moderate, relaxed
+        "custom_rules": [
+          "no_financial_advice",
+          "no_medical_diagnosis",
+          "no_legal_advice"
+        ]
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="ban" title="Restricted Topics">
+    Define topics your agent should avoid:
+    
+    ```yaml
+    restricted_topics:
+      - financial_advice
+      - medical_diagnosis
+      - legal_counsel
+      - political_opinions
+      - personal_information_requests
+    ```
+  </Accordion>
+  
+  <Accordion icon="exclamation-triangle" title="Escalation Triggers">
+    Automatically escalate conversations when:
+    
+    ```yaml
+    escalation_triggers:
+      - user_frustration_detected
+      - complex_technical_issue
+      - billing_dispute
+      - compliance_concern
+      - safety_violation
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Integration Properties
+
+### External Services
+
+Configure connections to external APIs and services:
+
+<Tabs>
+  <Tab title="Database">
+    Connect to databases for dynamic information:
+    
+    ```json
+    {
+      "database": {
+        "type": "postgresql",
+        "connection_string": "${DATABASE_URL}",
+        "max_connections": 10,
+        "timeout": 30000
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="APIs">
+    Integrate with REST APIs:
+    
+    ```json
+    {
+      "apis": {
+        "weather": {
+          "base_url": "https://api.weather.com/v1",
+          "auth_header": "X-API-Key",
+          "auth_token": "${WEATHER_API_KEY}"
+        },
+        "crm": {
+          "base_url": "https://api.salesforce.com/v1",
+          "auth_type": "oauth2",
+          "client_id": "${SALESFORCE_CLIENT_ID}"
+        }
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Webhooks">
+    Send events to external systems:
+    
+    ```json
+    {
+      "webhooks": {
+        "conversation_started": "https://your-app.com/webhooks/conversation-started",
+        "issue_escalated": "https://your-app.com/webhooks/escalation",
+        "customer_satisfied": "https://your-app.com/webhooks/satisfaction"
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Authentication
+
+Configure how your agent handles user authentication:
+
+```json Authentication Settings
+{
+  "auth": {
+    "required": false,
+    "methods": ["jwt", "api_key", "oauth2"],
+    "session_timeout": 3600,
+    "guest_access": true,
+    "user_identification": {
+      "by_email": true,
+      "by_phone": false,
+      "by_user_id": true
+    }
+  }
+}
+```
+
+## Performance Optimization
+
+### Response Settings
+
+<ResponseField name="response_delay" type="number" default="0">
+  Artificial delay before responding (in milliseconds). Useful for simulating human-like thinking time.
+  
+  **Range**: 0-5000ms
+</ResponseField>
+
+<ResponseField name="typing_indicator" type="boolean" default="true">
+  Show typing indicator while agent is generating responses.
+</ResponseField>
+
+<ResponseField name="streaming_responses" type="boolean" default="false">
+  Stream responses as they're generated for faster perceived response times.
+</ResponseField>
+
+### Caching
+
+Improve performance with intelligent caching:
+
+```json Caching Configuration
+{
+  "caching": {
+    "enabled": true,
+    "response_cache_ttl": 300,
+    "context_cache_ttl": 1800,
+    "api_cache_ttl": 600,
+    "cache_similar_queries": true,
+    "similarity_threshold": 0.85
+  }
+}
+```
+
+## Advanced Properties
+
+### Custom Functions
+
+Define custom functions your agent can use:
+
+```javascript Custom Function Example
+{
+  "custom_functions": [
+    {
+      "name": "calculate_shipping",
+      "description": "Calculate shipping cost based on weight and destination",
+      "parameters": {
+        "weight": { "type": "number", "description": "Package weight in kg" },
+        "destination": { "type": "string", "description": "Destination country code" }
+      },
+      "implementation": "function calculateShipping(weight, destination) { /* implementation */ }"
+    }
+  ]
+}
+```
+
+### Multi-Modal Capabilities
+
+Enable different input/output types:
+
+<CardGroup cols={2}>
+  <Card title="Text Processing" icon="text">
+    - Plain text conversations
+    - Markdown formatting
+    - Rich text responses
+    - Emoji support
+  </Card>
+  <Card title="File Handling" icon="file">
+    - Document analysis
+    - Image processing
+    - Audio transcription
+    - Video summarization
+  </Card>
+  <Card title="Voice Integration" icon="microphone">
+    - Speech-to-text input
+    - Text-to-speech output
+    - Voice synthesis options
+    - Audio quality settings
+  </Card>
+  <Card title="Visual Elements" icon="image">
+    - Image generation
+    - Chart creation
+    - Diagram rendering
+    - Screenshot analysis
+  </Card>
+</CardGroup>
+
+## Configuration Examples
+
+### Customer Service Agent
+
+```json
+{
+  "name": "Customer Support Assistant",
+  "model": "gpt-4-turbo",
+  "temperature": 0.3,
+  "system_prompt": "You are a helpful customer service representative...",
+  "conversation_style": "linear",
+  "proactive_engagement": true,
+  "escalation_triggers": ["billing_dispute", "technical_issue"],
+  "integrations": {
+    "crm": "salesforce",
+    "knowledge_base": "zendesk"
+  }
+}
+```
+
+### Sales Assistant
+
+```json
+{
+  "name": "Sales AI",
+  "model": "gpt-3.5-turbo",
+  "temperature": 0.7,
+  "system_prompt": "You are an enthusiastic sales assistant...",
+  "conversation_style": "exploratory",
+  "proactive_engagement": true,
+  "custom_functions": ["calculate_pricing", "check_inventory"],
+  "personality": "friendly_persuasive"
+}
+```
+
+### Technical Support Bot
+
+```json
+{
+  "name": "Tech Support Expert",
+  "model": "claude-3-sonnet",
+  "temperature": 0.2,
+  "system_prompt": "You are a technical support specialist...",
+  "conversation_style": "adaptive",
+  "context_retention": 20,
+  "integrations": {
+    "documentation": "gitbook",
+    "ticketing": "jira"
+  }
+}
+```
+
+## Best Practices
+
+<Tip>
+**Start Simple**: Begin with basic properties and gradually add complexity as you understand your users' needs.
+</Tip>
+
+<Warning>
+**Test Thoroughly**: Always test property changes in a staging environment before deploying to production.
+</Warning>
+
+<Note>
+**Monitor Performance**: Use analytics to understand how property changes affect user satisfaction and agent performance.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Messages and Limits"
+    icon="message-lines"
+    href="/agenthost/messages-and-limits"
+  >
+    Learn about messaging systems and platform limitations
+  </Card>
+  <Card
+    title="Fine-Tuning"
+    icon="sliders"
+    href="/agenthost/fine-tuning"
+  >
+    Advanced techniques for optimizing agent performance
+  </Card>
+</CardGroup>

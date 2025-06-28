@@ -1,0 +1,989 @@
+---
+title: "Bundles"
+description: "Package and distribute multiple agents and services together with AgentHost Bundles"
+icon: "box"
+---
+
+# Bundles
+
+AgentHost Bundles allow you to package multiple agents, services, and resources together to create comprehensive solutions for your customers. Whether you're building enterprise software suites, industry-specific solutions, or multi-agent workflows, bundles provide the flexibility and power you need.
+
+## Bundle Overview
+
+Bundles are collections of related agents, configurations, and resources that work together to solve complex problems or provide comprehensive services.
+
+<CardGroup cols={2}>
+  <Card title="Multi-Agent Systems" icon="users">
+    Coordinate multiple specialized agents
+    - Customer service teams
+    - Sales and support workflows
+    - Research and analysis pipelines
+    - Content creation systems
+  </Card>
+  <Card title="Solution Packages" icon="puzzle-piece">
+    Complete solutions for specific industries
+    - Healthcare management systems
+    - Financial advisory suites
+    - Educational platforms
+    - E-commerce automation
+  </Card>
+  <Card title="Workflow Automation" icon="gear">
+    End-to-end process automation
+    - Lead generation to conversion
+    - Content creation to publishing
+    - Data analysis to reporting
+    - Customer onboarding flows
+  </Card>
+  <Card title="Enterprise Suites" icon="building">
+    Comprehensive business solutions
+    - All-in-one platforms
+    - Departmental solutions
+    - Custom integrations
+    - White-label products
+  </Card>
+</CardGroup>
+
+## Bundle Types
+
+### Agent Collections
+
+Group related agents that work together:
+
+<Tabs>
+  <Tab title="Customer Service Suite">
+    **Components**:
+    - Front-line support agent
+    - Technical specialist agent
+    - Escalation manager agent
+    - Follow-up and satisfaction agent
+    
+    **Workflow**:
+    ```mermaid
+    graph LR
+        A[Customer Query] --> B[Front-line Agent]
+        B --> C{Issue Type}
+        C -->|Technical| D[Tech Specialist]
+        C -->|Billing| E[Billing Agent]
+        C -->|General| F[General Support]
+        D --> G[Escalation Manager]
+        E --> G
+        F --> G
+        G --> H[Follow-up Agent]
+    ```
+    
+    **Configuration**:
+    ```json
+    {
+      "bundle_type": "agent_collection",
+      "agents": [
+        {
+          "id": "frontline_support",
+          "role": "initial_contact",
+          "specialization": "triage"
+        },
+        {
+          "id": "tech_specialist", 
+          "role": "technical_support",
+          "specialization": "troubleshooting"
+        },
+        {
+          "id": "escalation_manager",
+          "role": "complex_issues",
+          "specialization": "problem_solving"
+        }
+      ],
+      "routing_logic": "intent_based"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Sales Pipeline">
+    **Components**:
+    - Lead qualification agent
+    - Product recommendation agent
+    - Pricing and quote agent
+    - Follow-up and nurturing agent
+    
+    **Process Flow**:
+    1. **Lead Qualification**: Assess prospect fit
+    2. **Product Matching**: Recommend solutions
+    3. **Pricing**: Generate quotes and proposals
+    4. **Follow-up**: Nurture and close deals
+    
+    **Integration**:
+    ```json
+    {
+      "crm_integration": {
+        "platform": "salesforce",
+        "lead_sync": true,
+        "opportunity_tracking": true,
+        "activity_logging": true
+      },
+      "handoff_rules": [
+        {
+          "condition": "qualified_lead",
+          "action": "transfer_to_product_agent"
+        },
+        {
+          "condition": "high_value_prospect",
+          "action": "alert_human_sales_rep"
+        }
+      ]
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Content Creation Team">
+    **Components**:
+    - Research and ideation agent
+    - Content writing agent
+    - Editing and optimization agent
+    - Publishing and promotion agent
+    
+    **Collaborative Workflow**:
+    ```yaml
+    workflow:
+      - stage: research
+        agent: research_agent
+        outputs: [topic_analysis, keyword_research, competitor_analysis]
+      - stage: creation
+        agent: writing_agent
+        inputs: [research_outputs]
+        outputs: [draft_content, meta_descriptions]
+      - stage: optimization
+        agent: editing_agent
+        inputs: [draft_content]
+        outputs: [final_content, seo_optimized]
+      - stage: publishing
+        agent: publishing_agent
+        inputs: [final_content]
+        outputs: [published_urls, social_posts]
+    ```
+  </Tab>
+</Tabs>
+
+### Industry Solutions
+
+Pre-configured bundles for specific industries:
+
+<AccordionGroup>
+  <Accordion icon="heart" title="Healthcare Bundle">
+    **Included Agents**:
+    - Patient intake and scheduling
+    - Symptom checker and triage
+    - Appointment reminders
+    - Insurance verification
+    - Post-visit follow-up
+    
+    **Compliance Features**:
+    - HIPAA compliance
+    - Patient data encryption
+    - Audit logging
+    - Consent management
+    
+    **Integrations**:
+    - EHR systems (Epic, Cerner)
+    - Practice management software
+    - Insurance verification APIs
+    - Telemedicine platforms
+  </Accordion>
+  
+  <Accordion icon="scale-balanced" title="Legal Services Bundle">
+    **Included Agents**:
+    - Client intake specialist
+    - Document review assistant
+    - Legal research agent
+    - Case management coordinator
+    - Billing and invoicing agent
+    
+    **Security Features**:
+    - Attorney-client privilege protection
+    - Document confidentiality
+    - Secure communication channels
+    - Access control systems
+    
+    **Specialized Functions**:
+    - Contract analysis
+    - Legal precedent research
+    - Document generation
+    - Deadline tracking
+  </Accordion>
+  
+  <Accordion icon="graduation-cap" title="Education Bundle">
+    **Included Agents**:
+    - Student advisor and counselor
+    - Assignment help tutor
+    - Administrative assistant
+    - Parent communication agent
+    - Career guidance counselor
+    
+    **Educational Features**:
+    - Adaptive learning paths
+    - Progress tracking
+    - Performance analytics
+    - Curriculum alignment
+    
+    **Integrations**:
+    - Learning management systems
+    - Student information systems
+    - Grade book applications
+    - Communication platforms
+  </Accordion>
+</AccordionGroup>
+
+## Bundle Configuration
+
+### Bundle Structure
+
+Define the architecture and relationships within your bundle:
+
+```json Bundle Configuration
+{
+  "bundle_id": "enterprise_support_suite",
+  "name": "Enterprise Customer Support Suite",
+  "version": "2.1.0",
+  "description": "Complete customer support solution with multi-agent workflow",
+  
+  "agents": [
+    {
+      "id": "intake_agent",
+      "name": "Customer Intake Specialist",
+      "type": "primary",
+      "model": "gpt-4-turbo",
+      "specialization": "customer_triage",
+      "config": {
+        "max_conversation_length": 20,
+        "escalation_threshold": 3,
+        "languages": ["en", "es", "fr"]
+      }
+    },
+    {
+      "id": "technical_agent",
+      "name": "Technical Support Expert",
+      "type": "specialist",
+      "model": "claude-3-sonnet",
+      "specialization": "technical_troubleshooting",
+      "config": {
+        "knowledge_base": "technical_docs_v2",
+        "tools": ["screen_sharing", "remote_access"],
+        "escalation_path": "human_engineer"
+      }
+    }
+  ],
+  
+  "workflows": [
+    {
+      "name": "standard_support_flow",
+      "trigger": "customer_message",
+      "steps": [
+        {
+          "agent": "intake_agent",
+          "condition": "always",
+          "max_attempts": 3
+        },
+        {
+          "agent": "technical_agent", 
+          "condition": "technical_issue_detected",
+          "handoff_criteria": ["issue_complexity > 7", "requires_tools"]
+        }
+      ]
+    }
+  ],
+  
+  "shared_resources": [
+    {
+      "type": "knowledge_base",
+      "id": "company_knowledge",
+      "accessible_by": ["intake_agent", "technical_agent"]
+    },
+    {
+      "type": "customer_database",
+      "id": "crm_integration",
+      "permissions": "read_write"
+    }
+  ]
+}
+```
+
+### Agent Coordination
+
+Implement sophisticated coordination between agents:
+
+<Tabs>
+  <Tab title="Sequential Handoffs">
+    **Use case**: Linear workflows where each agent handles a specific stage
+    
+    ```json Sequential Configuration
+    {
+      "coordination_type": "sequential",
+      "handoff_rules": [
+        {
+          "from": "intake_agent",
+          "to": "specialist_agent",
+          "conditions": [
+            "issue_category == 'technical'",
+            "complexity_score > 5"
+          ],
+          "context_transfer": [
+            "customer_info",
+            "issue_description",
+            "attempted_solutions"
+          ]
+        }
+      ],
+      "timeout_handling": {
+        "max_wait_time": 300,
+        "fallback_action": "escalate_to_human"
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Parallel Processing">
+    **Use case**: Multiple agents working simultaneously on different aspects
+    
+    ```json Parallel Configuration
+    {
+      "coordination_type": "parallel",
+      "parallel_tasks": [
+        {
+          "agent": "research_agent",
+          "task": "gather_background_info",
+          "priority": "normal"
+        },
+        {
+          "agent": "solution_agent",
+          "task": "generate_recommendations", 
+          "priority": "high",
+          "depends_on": ["research_agent"]
+        }
+      ],
+      "synchronization": {
+        "wait_for_all": false,
+        "timeout": 120,
+        "partial_results": true
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Collaborative">
+    **Use case**: Agents working together in real-time
+    
+    ```json Collaborative Configuration
+    {
+      "coordination_type": "collaborative",
+      "collaboration_model": "round_robin",
+      "participants": [
+        {
+          "agent": "domain_expert",
+          "role": "knowledge_provider"
+        },
+        {
+          "agent": "communication_specialist",
+          "role": "customer_interface"
+        }
+      ],
+      "collaboration_rules": [
+        {
+          "when": "uncertainty > 0.7",
+          "action": "consult_domain_expert"
+        },
+        {
+          "when": "customer_frustrated",
+          "action": "prioritize_communication_specialist"
+        }
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Bundle Deployment
+
+### Deployment Options
+
+Choose the right deployment strategy for your bundle:
+
+<CardGroup cols={2}>
+  <Card title="Cloud Deployment" icon="cloud">
+    **Benefits**:
+    - Automatic scaling
+    - Global distribution
+    - Managed infrastructure
+    - Built-in monitoring
+    
+    **Best for**: SaaS applications, high availability needs
+  </Card>
+  <Card title="On-Premises" icon="server">
+    **Benefits**:
+    - Complete control
+    - Data sovereignty
+    - Custom security
+    - Compliance requirements
+    
+    **Best for**: Enterprise customers, regulated industries
+  </Card>
+  <Card title="Hybrid Deployment" icon="globe">
+    **Benefits**:
+    - Flexible architecture
+    - Cost optimization
+    - Risk distribution
+    - Gradual migration
+    
+    **Best for**: Large organizations, multi-region needs
+  </Card>
+  <Card title="Edge Computing" icon="microchip">
+    **Benefits**:
+    - Low latency
+    - Offline capability
+    - Reduced bandwidth
+    - Local processing
+    
+    **Best for**: IoT applications, remote locations
+  </Card>
+</CardGroup>
+
+### Container Orchestration
+
+Deploy bundles using modern container technologies:
+
+```yaml Docker Compose Example
+version: '3.8'
+services:
+  bundle-orchestrator:
+    image: agenthost/orchestrator:latest
+    environment:
+      - BUNDLE_ID=enterprise_support_suite
+      - API_KEY=${AGENTHOST_API_KEY}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - postgres
+      
+  intake-agent:
+    image: agenthost/agent:gpt-4-turbo
+    environment:
+      - AGENT_ID=intake_agent
+      - SPECIALIZATION=customer_triage
+    scale: 3
+    
+  technical-agent:
+    image: agenthost/agent:claude-3-sonnet
+    environment:
+      - AGENT_ID=technical_agent
+      - SPECIALIZATION=technical_troubleshooting
+    scale: 2
+    
+  redis:
+    image: redis:7-alpine
+    
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=agenthost_bundle
+```
+
+### Kubernetes Deployment
+
+Scale bundles with Kubernetes:
+
+```yaml Kubernetes Manifest
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: support-bundle
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: support-bundle
+  template:
+    metadata:
+      labels:
+        app: support-bundle
+    spec:
+      containers:
+      - name: bundle-orchestrator
+        image: agenthost/orchestrator:v2.1.0
+        ports:
+        - containerPort: 8080
+        env:
+        - name: BUNDLE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: bundle-config
+              key: config.json
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: support-bundle-service
+spec:
+  selector:
+    app: support-bundle
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
+```
+
+## Bundle Management
+
+### Version Control
+
+Manage bundle versions and updates:
+
+<AccordionGroup>
+  <Accordion icon="code-branch" title="Version Strategy">
+    **Semantic Versioning**: Use MAJOR.MINOR.PATCH format
+    - **MAJOR**: Breaking changes in API or workflow
+    - **MINOR**: New features, backward compatible
+    - **PATCH**: Bug fixes and minor improvements
+    
+    **Example**:
+    ```json
+    {
+      "version": "2.1.3",
+      "changelog": {
+        "2.1.3": ["Fixed escalation timeout bug", "Improved response accuracy"],
+        "2.1.0": ["Added multi-language support", "New technical agent"],
+        "2.0.0": ["Redesigned workflow engine", "Breaking API changes"]
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="refresh" title="Update Management">
+    **Rolling Updates**: Update agents one at a time
+    **Blue-Green**: Maintain two environments for instant switching
+    **Canary Releases**: Gradual rollout to subset of users
+    
+    ```json Update Configuration
+    {
+      "update_strategy": "rolling",
+      "rollout_plan": {
+        "stages": [
+          {"percentage": 10, "duration": "1h"},
+          {"percentage": 50, "duration": "4h"},
+          {"percentage": 100, "duration": "ongoing"}
+        ],
+        "rollback_triggers": [
+          "error_rate > 5%",
+          "user_satisfaction < 4.0"
+        ]
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="history" title="Rollback Capabilities">
+    **Automatic Rollback**: Based on performance metrics
+    **Manual Rollback**: Admin-triggered immediate revert
+    **Partial Rollback**: Rollback specific agents only
+    
+    ```json Rollback Policy
+    {
+      "auto_rollback": {
+        "enabled": true,
+        "triggers": [
+          {"metric": "error_rate", "threshold": 0.05, "window": "5m"},
+          {"metric": "response_time", "threshold": 5000, "window": "2m"}
+        ]
+      },
+      "rollback_targets": [
+        "previous_stable_version",
+        "last_known_good_config"
+      ]
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Performance Monitoring
+
+Track bundle performance across all components:
+
+<Tabs>
+  <Tab title="System Metrics">
+    **Infrastructure Health**:
+    - CPU and memory usage
+    - Network latency
+    - Storage performance
+    - Container health
+    
+    **Monitoring Stack**:
+    ```yaml
+    monitoring:
+      metrics_collector: prometheus
+      visualization: grafana
+      alerting: alertmanager
+      log_aggregation: elasticsearch
+      
+    dashboards:
+      - system_overview
+      - agent_performance
+      - workflow_analytics
+      - customer_satisfaction
+    ```
+  </Tab>
+  
+  <Tab title="Business Metrics">
+    **Customer Experience**:
+    - Response times
+    - Resolution rates
+    - Satisfaction scores
+    - Escalation rates
+    
+    **Performance KPIs**:
+    ```json
+    {
+      "kpis": {
+        "first_response_time": {
+          "target": "< 30 seconds",
+          "current": "18 seconds"
+        },
+        "resolution_rate": {
+          "target": "> 85%",
+          "current": "92%"
+        },
+        "customer_satisfaction": {
+          "target": "> 4.5",
+          "current": "4.7"
+        }
+      }
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Agent Analytics">
+    **Individual Agent Performance**:
+    - Accuracy metrics
+    - Response quality
+    - Processing time
+    - Error rates
+    
+    **Cross-Agent Metrics**:
+    - Handoff success rates
+    - Workflow completion times
+    - Collaboration effectiveness
+    - Resource utilization
+  </Tab>
+</Tabs>
+
+## Bundle Marketplace
+
+### Publishing Bundles
+
+Share your bundles with the AgentHost community:
+
+<CardGroup cols={2}>
+  <Card title="Public Marketplace" icon="store">
+    - Reach global audience
+    - Revenue sharing model
+    - Community ratings and reviews
+    - Marketing support
+  </Card>
+  <Card title="Private Enterprise" icon="lock">
+    - Internal organization sharing
+    - Custom licensing terms
+    - White-label options
+    - Dedicated support
+  </Card>
+  <Card title="Partner Network" icon="handshake">
+    - Exclusive partner access
+    - Custom integrations
+    - Revenue sharing agreements
+    - Joint marketing opportunities
+  </Card>
+  <Card title="Open Source" icon="code">
+    - Community contributions
+    - Free usage and modification
+    - Collaborative development
+    - Educational purposes
+  </Card>
+</CardGroup>
+
+### Bundle Listing
+
+Create compelling marketplace listings:
+
+```json Marketplace Listing
+{
+  "bundle_info": {
+    "name": "Complete Customer Support Suite",
+    "tagline": "AI-powered customer service solution",
+    "description": "Comprehensive multi-agent system for enterprise customer support...",
+    "category": "customer_service",
+    "tags": ["support", "enterprise", "multi-agent", "workflow"],
+    "pricing": {
+      "model": "subscription",
+      "tiers": [
+        {
+          "name": "Starter",
+          "price": 299,
+          "features": ["Up to 1000 conversations/month", "2 agents", "Basic analytics"]
+        },
+        {
+          "name": "Professional", 
+          "price": 999,
+          "features": ["Up to 10,000 conversations/month", "5 agents", "Advanced analytics"]
+        }
+      ]
+    }
+  },
+  "media": {
+    "logo": "https://cdn.example.com/bundle-logo.png",
+    "screenshots": [
+      "https://cdn.example.com/screenshot1.png",
+      "https://cdn.example.com/screenshot2.png"
+    ],
+    "demo_video": "https://youtube.com/watch?v=demo_video"
+  },
+  "metrics": {
+    "installations": 1250,
+    "rating": 4.8,
+    "reviews": 89
+  }
+}
+```
+
+### Discovery and Installation
+
+Make it easy for customers to find and install your bundles:
+
+<Tabs>
+  <Tab title="Search & Discovery">
+    **Search Features**:
+    - Keyword search
+    - Category filtering
+    - Tag-based discovery
+    - Popularity rankings
+    - Personalized recommendations
+    
+    **Discovery Algorithms**:
+    - Content-based filtering
+    - Collaborative filtering
+    - Trending bundles
+    - Similar bundle suggestions
+  </Tab>
+  
+  <Tab title="Installation Process">
+    **One-Click Installation**:
+    ```bash
+    # Command line installation
+    agenthost bundle install customer-support-suite
+    
+    # API installation
+    curl -X POST https://api.agenthost.ai/v1/bundles/install \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -d '{"bundle_id": "customer-support-suite"}'
+    ```
+    
+    **Configuration Wizard**:
+    - Environment setup
+    - Integration configuration
+    - Customization options
+    - Testing and validation
+  </Tab>
+  
+  <Tab title="Trial and Evaluation">
+    **Free Trials**: 
+    - 14-day full feature access
+    - Sandbox environment
+    - Sample data sets
+    - Tutorial walkthrough
+    
+    **Evaluation Metrics**:
+    - Usage analytics
+    - Performance benchmarks
+    - ROI calculations
+    - Customer feedback
+  </Tab>
+</Tabs>
+
+## Advanced Bundle Features
+
+### Multi-Tenant Architecture
+
+Support multiple customers with isolated environments:
+
+```json Multi-Tenant Configuration
+{
+  "tenancy_model": "isolated",
+  "tenant_isolation": {
+    "data": "complete_separation",
+    "compute": "shared_with_limits",
+    "network": "vlan_isolation"
+  },
+  "tenant_customization": {
+    "branding": true,
+    "workflows": true,
+    "integrations": true,
+    "agent_personalities": true
+  },
+  "resource_allocation": {
+    "cpu_limits": "per_tenant",
+    "memory_limits": "per_tenant", 
+    "storage_quotas": "tiered_by_plan"
+  }
+}
+```
+
+### Event-Driven Architecture
+
+Implement reactive systems with event handling:
+
+<AccordionGroup>
+  <Accordion icon="bolt" title="Event Types">
+    **System Events**:
+    - Agent startup/shutdown
+    - Workflow state changes
+    - Error conditions
+    - Performance alerts
+    
+    **Business Events**:
+    - Customer interactions
+    - Task completions
+    - Escalations
+    - SLA breaches
+    
+    **Integration Events**:
+    - External API calls
+    - Database updates
+    - Third-party notifications
+    - Webhook triggers
+  </Accordion>
+  
+  <Accordion icon="flow" title="Event Processing">
+    **Event Bus Configuration**:
+    ```json
+    {
+      "event_bus": {
+        "type": "apache_kafka",
+        "topics": [
+          "customer_interactions",
+          "agent_performance",
+          "system_alerts",
+          "workflow_events"
+        ],
+        "partitioning": "tenant_id",
+        "retention": "7_days"
+      }
+    }
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### API Gateway
+
+Provide unified access to bundle functionality:
+
+```yaml API Gateway Configuration
+gateway:
+  endpoints:
+    - path: "/v1/bundles/{bundle_id}/chat"
+      method: POST
+      handler: chat_handler
+      rate_limit: 100/minute
+      auth: required
+      
+    - path: "/v1/bundles/{bundle_id}/status"
+      method: GET
+      handler: status_handler
+      rate_limit: 1000/minute
+      auth: optional
+      
+  middleware:
+    - authentication
+    - rate_limiting
+    - request_logging
+    - response_caching
+    
+  load_balancing:
+    algorithm: round_robin
+    health_checks: enabled
+    circuit_breaker: enabled
+```
+
+## Best Practices
+
+### Design Principles
+
+<Tip>
+**Modular Design**: Create loosely coupled components that can be independently updated and scaled
+</Tip>
+
+<Tip>
+**Clear Interfaces**: Define clear APIs and contracts between agents and services
+</Tip>
+
+<Warning>
+**Avoid Tight Coupling**: Don't create dependencies that make it difficult to update individual components
+</Warning>
+
+### Performance Optimization
+
+<AccordionGroup>
+  <Accordion icon="rocket" title="Scalability">
+    - Design for horizontal scaling
+    - Implement proper caching strategies
+    - Use asynchronous processing where possible
+    - Optimize resource allocation
+  </Accordion>
+  
+  <Accordion icon="shield" title="Reliability">
+    - Implement circuit breakers
+    - Use retry mechanisms with exponential backoff
+    - Plan for graceful degradation
+    - Monitor and alert on failures
+  </Accordion>
+  
+  <Accordion icon="lock" title="Security">
+    - Implement zero-trust architecture
+    - Use encrypted communication between components
+    - Regular security audits and updates
+    - Proper access control and authentication
+  </Accordion>
+</AccordionGroup>
+
+### Operational Excellence
+
+<Note>
+**Documentation**: Maintain comprehensive documentation for installation, configuration, and troubleshooting
+</Note>
+
+<Note>
+**Testing**: Implement automated testing for all bundle components and workflows
+</Note>
+
+<Tip>
+**Observability**: Implement comprehensive logging, metrics, and tracing across all components
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Custom Domains & Embedding"
+    icon="globe"
+    href="/agenthost/custom-domains-and-embedding-agents"
+  >
+    Deploy your bundles on custom domains and embed them anywhere
+  </Card>
+  <Card
+    title="Agent Properties"
+    icon="settings"
+    href="/agenthost/agent-properties"
+  >
+    Fine-tune individual agents within your bundles
+  </Card>
+</CardGroup>

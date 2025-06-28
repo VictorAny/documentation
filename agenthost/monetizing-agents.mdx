@@ -1,0 +1,793 @@
+---
+title: "Monetizing Agents"
+description: "Turn your AI agents into revenue-generating assets with AgentHost's monetization features"
+icon: "dollar-sign"
+---
+
+# Monetizing Agents
+
+Transform your AI agents into profitable business assets with AgentHost's comprehensive monetization platform. Whether you're building SaaS applications, offering consulting services, or creating AI products, we provide the tools you need to generate revenue from your agents.
+
+## Monetization Models
+
+AgentHost supports multiple revenue models to match your business strategy:
+
+<CardGroup cols={2}>
+  <Card title="Subscription Plans" icon="credit-card">
+    Recurring revenue through monthly or annual subscriptions
+    - Tiered access levels
+    - Feature-based pricing
+    - Usage-based billing
+    - Free tier with upgrades
+  </Card>
+  <Card title="Pay-Per-Use" icon="coins">
+    Charge users based on actual usage
+    - Per-message pricing
+    - Per-minute conversations
+    - API call billing
+    - Token-based pricing
+  </Card>
+  <Card title="One-Time Purchases" icon="shopping-cart">
+    Single payments for agent access or features
+    - Lifetime access licenses
+    - Premium feature unlocks
+    - Custom agent builds
+    - Consultation packages
+  </Card>
+  <Card title="Commission-Based" icon="percent">
+    Earn commissions from transactions
+    - Affiliate partnerships
+    - Referral programs
+    - Transaction processing
+    - Revenue sharing
+  </Card>
+</CardGroup>
+
+## Setting Up Monetization
+
+### Basic Configuration
+
+Configure your agent's monetization settings through the dashboard:
+
+```json Monetization Configuration
+{
+  "monetization": {
+    "enabled": true,
+    "model": "subscription",
+    "pricing": {
+      "free_tier": {
+        "messages_per_month": 100,
+        "features": ["basic_chat", "text_only"]
+      },
+      "pro_tier": {
+        "price": 29.99,
+        "currency": "USD",
+        "billing_cycle": "monthly",
+        "messages_per_month": 1000,
+        "features": ["advanced_chat", "file_uploads", "api_access"]
+      },
+      "enterprise_tier": {
+        "price": 299.99,
+        "currency": "USD",
+        "billing_cycle": "monthly",
+        "messages_per_month": "unlimited",
+        "features": ["all_features", "priority_support", "custom_branding"]
+      }
+    }
+  }
+}
+```
+
+### Payment Integration
+
+AgentHost integrates with leading payment providers:
+
+<Tabs>
+  <Tab title="Stripe">
+    **Setup**: Connect your Stripe account for seamless payment processing
+    
+    ```javascript Stripe Integration
+    const paymentConfig = {
+      provider: "stripe",
+      publishable_key: "pk_live_...",
+      webhook_endpoint: "https://your-app.com/webhooks/stripe",
+      supported_currencies: ["USD", "EUR", "GBP"],
+      payment_methods: ["card", "bank_transfer", "apple_pay"]
+    };
+    ```
+    
+    **Features**:
+    - Global payment support
+    - Subscription management
+    - Invoice generation
+    - Tax calculation
+    - Fraud prevention
+  </Tab>
+  
+  <Tab title="PayPal">
+    **Setup**: Configure PayPal for international reach
+    
+    ```javascript PayPal Integration
+    const paymentConfig = {
+      provider: "paypal",
+      client_id: "your_paypal_client_id",
+      environment: "production", // or "sandbox"
+      supported_currencies: ["USD", "EUR", "CAD", "AUD"],
+      payment_methods: ["paypal", "credit_card"]
+    };
+    ```
+    
+    **Benefits**:
+    - Trusted brand recognition
+    - Buyer protection
+    - International coverage
+    - Multiple currencies
+  </Tab>
+  
+  <Tab title="Cryptocurrency">
+    **Setup**: Accept crypto payments with modern wallets
+    
+    ```javascript Crypto Integration
+    const paymentConfig = {
+      provider: "coinbase_commerce",
+      api_key: "your_coinbase_api_key",
+      supported_currencies: ["BTC", "ETH", "USDC", "LTC"],
+      settlement_currency: "USD"
+    };
+    ```
+    
+    **Advantages**:
+    - Lower transaction fees
+    - Instant settlements
+    - Global accessibility
+    - Future-proof technology
+  </Tab>
+</Tabs>
+
+## Pricing Strategies
+
+### Tiered Pricing
+
+Design pricing tiers that grow with your customers:
+
+<AccordionGroup>
+  <Accordion icon="star" title="Free Tier">
+    **Purpose**: User acquisition and product validation
+    
+    **Typical limits**:
+    - 50-100 messages per month
+    - Basic features only
+    - Community support
+    - AgentHost branding
+    
+    **Strategy**: Provide enough value to demonstrate potential while encouraging upgrades
+  </Accordion>
+  
+  <Accordion icon="rocket" title="Pro Tier">
+    **Purpose**: Individual users and small teams
+    
+    **Typical features**:
+    - 1,000-10,000 messages per month
+    - Advanced AI models
+    - File upload capabilities
+    - Email support
+    - Custom branding options
+    
+    **Price range**: $9.99 - $49.99/month
+  </Accordion>
+  
+  <Accordion icon="building" title="Enterprise Tier">
+    **Purpose**: Large organizations and high-volume users
+    
+    **Typical features**:
+    - Unlimited usage
+    - Premium AI models
+    - Priority support
+    - Custom integrations
+    - SLA guarantees
+    - Dedicated infrastructure
+    
+    **Price range**: $99.99 - $999.99/month
+  </Accordion>
+</AccordionGroup>
+
+### Usage-Based Pricing
+
+Charge customers based on actual consumption:
+
+```json Usage-Based Pricing
+{
+  "pricing_model": "usage",
+  "rates": {
+    "messages": {
+      "rate": 0.05,
+      "unit": "per_message",
+      "currency": "USD",
+      "minimum_charge": 1.00
+    },
+    "ai_tokens": {
+      "rate": 0.002,
+      "unit": "per_1k_tokens",
+      "currency": "USD"
+    },
+    "file_storage": {
+      "rate": 0.10,
+      "unit": "per_gb_month",
+      "currency": "USD"
+    }
+  },
+  "billing_cycle": "monthly",
+  "prepaid_credits": true
+}
+```
+
+### Dynamic Pricing
+
+Implement intelligent pricing that adapts to market conditions:
+
+<CardGroup cols={2}>
+  <Card title="Demand-Based" icon="chart-line">
+    Adjust prices based on usage patterns
+    - Peak hour pricing
+    - Seasonal adjustments
+    - Capacity-based rates
+    - Market demand signals
+  </Card>
+  <Card title="Customer-Based" icon="users">
+    Personalized pricing for different segments
+    - Enterprise discounts
+    - Volume pricing
+    - Loyalty rewards
+    - Geographic pricing
+  </Card>
+  <Card title="Value-Based" icon="trophy">
+    Price based on customer value received
+    - ROI-based pricing
+    - Performance metrics
+    - Business impact
+    - Success milestones
+  </Card>
+  <Card title="Competition-Based" icon="balance">
+    Stay competitive in the market
+    - Market analysis
+    - Competitor monitoring
+    - Price positioning
+    - Differentiation value
+  </Card>
+</CardGroup>
+
+## Revenue Optimization
+
+### A/B Testing Pricing
+
+Test different pricing strategies to maximize revenue:
+
+```javascript Pricing A/B Test
+const pricingTest = {
+  test_name: "pro_tier_pricing",
+  variants: [
+    {
+      name: "control",
+      price: 29.99,
+      traffic_split: 50
+    },
+    {
+      name: "variant_a",
+      price: 24.99,
+      traffic_split: 25
+    },
+    {
+      name: "variant_b",
+      price: 34.99,
+      traffic_split: 25
+    }
+  ],
+  metrics_to_track: [
+    "conversion_rate",
+    "revenue_per_user",
+    "customer_lifetime_value",
+    "churn_rate"
+  ]
+};
+```
+
+### Customer Segmentation
+
+Target different customer segments with tailored pricing:
+
+<Tabs>
+  <Tab title="SMB Segment">
+    **Characteristics**: Small and medium businesses
+    **Price sensitivity**: High
+    **Value drivers**: Cost savings, efficiency
+    **Pricing approach**: Affordable tiers with clear ROI
+    
+    ```json SMB Pricing
+    {
+      "segment": "smb",
+      "max_budget": 100,
+      "key_features": ["automation", "cost_savings"],
+      "pricing_strategy": "value_for_money"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Enterprise Segment">
+    **Characteristics**: Large corporations
+    **Price sensitivity**: Lower
+    **Value drivers**: Scalability, integration, support
+    **Pricing approach**: Premium pricing with comprehensive features
+    
+    ```json Enterprise Pricing
+    {
+      "segment": "enterprise",
+      "min_budget": 1000,
+      "key_features": ["scalability", "security", "support"],
+      "pricing_strategy": "premium_value"
+    }
+    ```
+  </Tab>
+  
+  <Tab title="Developer Segment">
+    **Characteristics**: Technical users and agencies
+    **Price sensitivity**: Medium
+    **Value drivers**: API access, customization, documentation
+    **Pricing approach**: Usage-based with developer-friendly features
+    
+    ```json Developer Pricing
+    {
+      "segment": "developer",
+      "billing_preference": "usage_based",
+      "key_features": ["api_access", "customization"],
+      "pricing_strategy": "usage_aligned"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Analytics and Reporting
+
+### Revenue Metrics
+
+Track key performance indicators to optimize your monetization:
+
+<AccordionGroup>
+  <Accordion icon="chart-line" title="Core Revenue Metrics">
+    **Monthly Recurring Revenue (MRR)**:
+    - Predictable monthly income
+    - Growth rate tracking
+    - Churn impact analysis
+    
+    **Customer Lifetime Value (CLV)**:
+    - Long-term customer value
+    - Acquisition cost comparison
+    - Profitability analysis
+    
+    **Average Revenue Per User (ARPU)**:
+    - Revenue efficiency per customer
+    - Pricing strategy effectiveness
+    - Upselling opportunities
+  </Accordion>
+  
+  <Accordion icon="users" title="Customer Metrics">
+    **Conversion Rates**:
+    - Free to paid conversions
+    - Trial conversion rates
+    - Upgrade conversion rates
+    
+    **Churn Analysis**:
+    - Monthly churn rate
+    - Churn reasons
+    - Retention strategies
+    
+    **Customer Acquisition Cost (CAC)**:
+    - Marketing efficiency
+    - Channel performance
+    - Payback period
+  </Accordion>
+  
+  <Accordion icon="activity" title="Usage Analytics">
+    **Feature Adoption**:
+    - Most used features
+    - Paid feature utilization
+    - Feature-revenue correlation
+    
+    **Usage Patterns**:
+    - Peak usage times
+    - Seasonal trends
+    - Geographic distribution
+  </Accordion>
+</AccordionGroup>
+
+### Revenue Dashboard
+
+Monitor your monetization performance in real-time:
+
+```json Dashboard Configuration
+{
+  "dashboard": {
+    "widgets": [
+      {
+        "type": "revenue_chart",
+        "timeframe": "30d",
+        "breakdown": "by_plan"
+      },
+      {
+        "type": "conversion_funnel",
+        "stages": ["visitor", "trial", "paid", "churned"]
+      },
+      {
+        "type": "customer_map",
+        "metric": "revenue",
+        "geographic": true
+      },
+      {
+        "type": "cohort_analysis",
+        "metric": "retention",
+        "periods": 12
+      }
+    ],
+    "alerts": [
+      {
+        "condition": "mrr_growth < 5%",
+        "notification": "slack"
+      },
+      {
+        "condition": "churn_rate > 10%",
+        "notification": "email"
+      }
+    ]
+  }
+}
+```
+
+## Customer Management
+
+### Subscription Lifecycle
+
+Manage the complete customer journey:
+
+<Tabs>
+  <Tab title="Onboarding">
+    **Welcome new subscribers**:
+    - Automated welcome emails
+    - Feature introduction tours
+    - Success milestone tracking
+    - Early engagement campaigns
+    
+    ```javascript Onboarding Flow
+    const onboardingFlow = {
+      steps: [
+        { action: "send_welcome_email", delay: 0 },
+        { action: "show_feature_tour", delay: "immediate" },
+        { action: "assign_success_manager", delay: "1_hour" },
+        { action: "schedule_check_in", delay: "3_days" }
+      ]
+    };
+    ```
+  </Tab>
+  
+  <Tab title="Engagement">
+    **Keep customers active**:
+    - Usage analytics
+    - Feature recommendations
+    - Success coaching
+    - Community building
+    
+    ```javascript Engagement Strategy
+    const engagementStrategy = {
+      low_usage_trigger: {
+        condition: "messages_per_week < 10",
+        actions: ["send_tips_email", "offer_consultation"]
+      },
+      high_value_customer: {
+        condition: "revenue > 1000",
+        actions: ["assign_account_manager", "priority_support"]
+      }
+    };
+    ```
+  </Tab>
+  
+  <Tab title="Retention">
+    **Prevent churn and encourage upgrades**:
+    - Churn prediction
+    - Winback campaigns
+    - Upgrade incentives
+    - Satisfaction surveys
+    
+    ```javascript Retention Program
+    const retentionProgram = {
+      churn_risk_signals: [
+        "decreased_usage",
+        "support_tickets",
+        "billing_issues"
+      ],
+      interventions: [
+        "personal_outreach",
+        "usage_consultation",
+        "feature_training",
+        "discount_offer"
+      ]
+    };
+    ```
+  </Tab>
+</Tabs>
+
+### Billing Management
+
+Automate billing operations for smooth revenue collection:
+
+<AccordionGroup>
+  <Accordion icon="credit-card" title="Payment Processing">
+    **Automated billing**:
+    - Recurring charge processing
+    - Failed payment retry logic
+    - Dunning management
+    - Payment method updates
+    
+    ```json Billing Configuration
+    {
+      "retry_schedule": [1, 3, 7], // days
+      "grace_period": 3, // days
+      "suspension_threshold": 7, // days
+      "cancellation_threshold": 30 // days
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="receipt" title="Invoicing">
+    **Professional invoicing**:
+    - Automated invoice generation
+    - Custom branding
+    - Tax calculation
+    - Multi-currency support
+    
+    ```json Invoice Settings
+    {
+      "branding": {
+        "logo": "https://yoursite.com/logo.png",
+        "company_name": "Your Company",
+        "address": "123 Business St, City, State"
+      },
+      "tax_settings": {
+        "auto_calculate": true,
+        "tax_rates": {
+          "US": 0.08,
+          "EU": 0.20
+        }
+      }
+    }
+    ```
+  </Accordion>
+  
+  <Accordion icon="chart-bar" title="Financial Reporting">
+    **Revenue insights**:
+    - Revenue recognition
+    - Financial statements
+    - Tax reporting
+    - Audit trails
+  </Accordion>
+</AccordionGroup>
+
+## Marketplace Integration
+
+### AgentHost Marketplace
+
+List your agents in the AgentHost marketplace to reach more customers:
+
+<CardGroup cols={2}>
+  <Card title="Marketplace Listing" icon="store">
+    - Professional agent profiles
+    - Customer reviews and ratings
+    - Usage statistics
+    - Revenue sharing model
+  </Card>
+  <Card title="Discovery Features" icon="search">
+    - Category-based browsing
+    - Search optimization
+    - Featured listings
+    - Recommendation engine
+  </Card>
+  <Card title="Marketing Support" icon="megaphone">
+    - Promotional campaigns
+    - Email marketing
+    - Social media features
+    - Affiliate programs
+  </Card>
+  <Card title="Partnership Opportunities" icon="handshake">
+    - Integration partnerships
+    - Revenue sharing deals
+    - Co-marketing initiatives
+    - Technical collaborations
+  </Card>
+</CardGroup>
+
+### Third-Party Marketplaces
+
+Expand your reach through external platforms:
+
+```json Marketplace Integrations
+{
+  "marketplaces": [
+    {
+      "platform": "gpt_store",
+      "listing_fee": 0,
+      "revenue_share": 0.30,
+      "features": ["app_store_optimization", "user_reviews"]
+    },
+    {
+      "platform": "zapier",
+      "integration_type": "workflow",
+      "revenue_model": "subscription",
+      "features": ["automation", "enterprise_reach"]
+    },
+    {
+      "platform": "microsoft_teams",
+      "integration_type": "bot",
+      "revenue_model": "per_seat",
+      "features": ["enterprise_sales", "bulk_licensing"]
+    }
+  ]
+}
+```
+
+## Advanced Monetization
+
+### API Licensing
+
+Monetize your agent's capabilities through API access:
+
+```json API Licensing Model
+{
+  "licensing_tiers": {
+    "developer": {
+      "price": 99,
+      "requests_per_month": 10000,
+      "rate_limit": "100/hour",
+      "features": ["basic_api", "documentation"]
+    },
+    "business": {
+      "price": 499,
+      "requests_per_month": 100000,
+      "rate_limit": "1000/hour",
+      "features": ["advanced_api", "webhooks", "priority_support"]
+    },
+    "enterprise": {
+      "price": "custom",
+      "requests_per_month": "unlimited",
+      "rate_limit": "custom",
+      "features": ["white_label", "on_premise", "sla"]
+    }
+  }
+}
+```
+
+### White-Label Solutions
+
+Offer your agents as white-label products:
+
+<AccordionGroup>
+  <Accordion icon="palette" title="Custom Branding">
+    - Complete UI customization
+    - Custom domain deployment
+    - Brand asset integration
+    - Branded documentation
+  </Accordion>
+  
+  <Accordion icon="gear" title="Configuration">
+    - Client-specific settings
+    - Feature customization
+    - Integration options
+    - Security configurations
+  </Accordion>
+  
+  <Accordion icon="dollar" title="Pricing Models">
+    - One-time licensing fees
+    - Revenue sharing agreements
+    - Subscription-based licensing
+    - Usage-based pricing
+  </Accordion>
+</AccordionGroup>
+
+## Compliance and Legal
+
+### Financial Compliance
+
+Ensure your monetization meets regulatory requirements:
+
+<CardGroup cols={2}>
+  <Card title="Tax Compliance" icon="receipt">
+    - VAT/GST calculation
+    - Tax reporting
+    - Multi-jurisdiction compliance
+    - Automated tax filing
+  </Card>
+  <Card title="Data Protection" icon="shield">
+    - GDPR compliance
+    - Customer data handling
+    - Payment data security
+    - Privacy by design
+  </Card>
+  <Card title="Financial Regulations" icon="scale-balanced">
+    - PCI DSS compliance
+    - Anti-money laundering
+    - Know your customer (KYC)
+    - Financial reporting
+  </Card>
+  <Card title="Terms of Service" icon="file-contract">
+    - Clear pricing terms
+    - Refund policies
+    - Service level agreements
+    - Liability limitations
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+### Pricing Strategy
+
+<Tip>
+**Value-Based Pricing**: Price based on the value your agent provides to customers, not just your costs
+</Tip>
+
+<Tip>
+**Freemium Model**: Offer a compelling free tier to attract users, then convert them to paid plans
+</Tip>
+
+<Tip>
+**Transparent Pricing**: Be clear about what's included in each plan and any usage limits
+</Tip>
+
+### Customer Success
+
+<Warning>
+**Avoid Surprise Charges**: Always communicate pricing changes and usage limits clearly to customers
+</Warning>
+
+<Note>
+**Support Investment**: Invest in customer support as it directly impacts retention and revenue
+</Note>
+
+### Growth Strategies
+
+<AccordionGroup>
+  <Accordion icon="rocket" title="Acquisition">
+    - Content marketing and SEO
+    - Partner referral programs
+    - Free trial optimization
+    - Social proof and testimonials
+  </Accordion>
+  
+  <Accordion icon="arrow-up" title="Expansion">
+    - Usage-based upgrade prompts
+    - Feature unlock opportunities
+    - Cross-selling related services
+    - Enterprise sales programs
+  </Accordion>
+  
+  <Accordion icon="heart" title="Retention">
+    - Proactive customer success
+    - Regular value demonstration
+    - Community building
+    - Loyalty programs
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Fine-Tuning"
+    icon="sliders"
+    href="/agenthost/fine-tuning"
+  >
+    Optimize your agent's performance to increase customer value
+  </Card>
+  <Card
+    title="Bundles"
+    icon="box"
+    href="/agenthost/bundles"
+  >
+    Package multiple agents or services for higher revenue
+  </Card>
+</CardGroup>
